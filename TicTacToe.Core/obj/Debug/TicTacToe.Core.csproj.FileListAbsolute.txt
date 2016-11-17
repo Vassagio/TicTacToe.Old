@@ -1,5 +1,0 @@
-C:\Personal\Projects\TicTacToe\TicTacToe.Core\bin\Debug\TicTacToe.Core.dll
-C:\Personal\Projects\TicTacToe\TicTacToe.Core\bin\Debug\TicTacToe.Core.pdb
-C:\Personal\Projects\TicTacToe\TicTacToe.Core\obj\Debug\TicTacToe.Core.csprojResolveAssemblyReference.cache
-C:\Personal\Projects\TicTacToe\TicTacToe.Core\obj\Debug\TicTacToe.Core.dll
-C:\Personal\Projects\TicTacToe\TicTacToe.Core\obj\Debug\TicTacToe.Core.pdb
