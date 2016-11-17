@@ -32,7 +32,7 @@ namespace TicTacToe.Core.Test.Players {
 
         [Theory]
         [InlineData(1, 1, 1)]
-        [InlineData(3, 3, 1)]
+        [InlineData(3, 1, 3)]
         [InlineData(5, 2, 2)]
         public void Choose_A_Position(int position, int x, int y) {
             var patternFactory = new MockPatternFactory();
@@ -51,7 +51,7 @@ namespace TicTacToe.Core.Test.Players {
         public class IsWinner {
             [Fact]
             public void Returns_True_When_Winning_Pattern_Matches() {
-                var patternFactory = new MockPatternFactory().CreateStubbedToReturn(new List<string> { "1010" });
+                var patternFactory = new MockPatternFactory().CreateStubbedToReturn(new List<string> { "1100" });
                 var board = new Board(2, patternFactory);
                 var player = BuildHumanPlayer();
                 player.ChoosePosition(board, 1);

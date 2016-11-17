@@ -16,7 +16,7 @@ namespace TicTacToe.Core {
         public Game Create(GameSettings gameSettings) {
             var board = new Board(gameSettings.BoardSize, _patternFactory);
             var players = _playersFactory.Create(gameSettings);
-            var ai = _aiFactory.Create(gameSettings);
+            var ai = _aiFactory.Create(gameSettings, players);
 
             return new Game(board, players, ai);
         }

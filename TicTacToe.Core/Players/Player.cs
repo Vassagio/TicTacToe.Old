@@ -5,6 +5,8 @@ namespace TicTacToe.Core.Players {
         public string Name { get; }
         public char Symbol { get; }
 
+        protected Player() {}
+
         protected Player(PlayerSettings settings) {
             Name = settings.Name;
             Symbol = settings.Symbol;

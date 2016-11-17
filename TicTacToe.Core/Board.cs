@@ -96,5 +96,17 @@ namespace TicTacToe.Core {
 
             return new Nobody();
         }
+
+        public override string ToString() {
+            var board = new StringBuilder();
+            board.AppendLine("|- - -|- - -|- - -|");
+            board.AppendLine($"|- {Tokens[0,0]} -|- {Tokens[0, 1]} -|- {Tokens[0, 2]} -|");
+            board.AppendLine("|- - -|- - -|- - -|");
+            board.AppendLine($"|- {Tokens[1, 0]} -|- {Tokens[1, 1]} -|- {Tokens[1, 2]} -|");
+            board.AppendLine("|- - -|- - -|- - -|");
+            board.AppendLine($"|- {Tokens[2, 0]} -|- {Tokens[2, 1]} -|- {Tokens[2, 2]} -|");
+            board.AppendLine("|- - -|- - -|- - -|");
+            return board.ToString();
+        }
     }
 }

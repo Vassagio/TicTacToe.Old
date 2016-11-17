@@ -22,7 +22,7 @@ namespace TicTacToe.Core.Test {
             var coordinate = BuildBoardCoordinate(x, y);
 
             coordinate.IsCoordinateValidForBoardSize(boardSize).Should().BeTrue();
-            coordinate.GetPosition(boardSize).Should().Be(position);
+            coordinate.ToPosition(boardSize).Should().Be(position);
         }
 
 

@@ -1,51 +1,72 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using TicTacToe.Core.Players;
 
 namespace TicTacToe.Core.AI {
-    public class MiniMaxIntelligence : IIntelligence {        
-        public BoardCoordinate GetBestMove(IBoard board, IEnumerable<IPlayer> players, IPlayer originalPlayer, IPlayer currentPlayer) {
-            BoardCoordinate bestChoice = null;
-            var openSpaces = board.GetOpenSpaces();
-            var opponent = GetOpponent(players, currentPlayer);
-            foreach (var space in openSpaces) {
-                var newBoard = (IBoard)board.Clone();
-                var choice = space;
+    public class MiniMaxIntelligence : IIntelligence {
+        private readonly IEnumerable<IPlayer> _players;
 
-                newBoard.AddToken(new Token(currentPlayer), choice);
-
-                choice.Rank = GetRank(newBoard, players, originalPlayer, currentPlayer, opponent);
-                                    
-                if (IsBestChoice(originalPlayer, currentPlayer, opponent, bestChoice, choice))
-                    bestChoice = choice;
-            }
-            return bestChoice;
+        public MiniMaxIntelligence(IEnumerable<IPlayer> players) {
+            _players = players;
         }
 
-        private int GetRank(IBoard newBoard, IEnumerable<IPlayer> players, IPlayer originalPlayer, IPlayer currentPlayer, IPlayer opponent) {
-            var winner = newBoard.GetWinner(players);
-            if (winner is Nobody && newBoard.GetOpenSpaces().Any()) {
-                var tempChoice = GetBestMove(newBoard, players, currentPlayer, opponent);
-                return tempChoice.Rank;
+        public BoardCoordinate DetermineBest(IBoard board, IPlayer minimizePlayer, IPlayer maximizedPlayer) {
+            var openSpaces = board.GetOpenSpaces();
+            if (openSpaces.Count() == board.Size * board.Size)
+                return board.ToCoordinate(GetRandomCorner(board));
+            if (openSpaces.Count() == 1)
+                return openSpaces.First();
+
+            var opponent = GetOpponent(minimizePlayer);
+            var bestSpace = default(BoardCoordinate);
+
+            foreach (var openSpace in openSpaces) {
+                var newBoard = (IBoard)board.Clone();
+                var currentSpace = (BoardCoordinate)openSpace.Clone();
+                minimizePlayer.ChoosePosition(newBoard, openSpace.ToPosition(board.Size));
+                var winner = newBoard.GetWinner(_players);
+                if (winner is Nobody && newBoard.GetOpenSpaces().Any())
+                    currentSpace.Rank = GetChildRank(newBoard, opponent, minimizePlayer);
+                else
+                    currentSpace.Rank = GetRank(winner, minimizePlayer);
+
+                if (bestSpace == null)
+                    bestSpace = currentSpace;
+                else if (minimizePlayer == opponent && currentSpace.Rank > bestSpace.Rank)
+                    bestSpace = currentSpace;
+                else if (minimizePlayer == maximizedPlayer && currentSpace.Rank < bestSpace.Rank)
+                    bestSpace = currentSpace;
             }
             
+            return bestSpace;
+        }
+
+        private int GetRandomCorner(IBoard board) {
+            var corner1 = 1;
+            var corner2 = board.Size;
+            var corner3 = board.Size * (board.Size - 1) + 1;
+            var corner4 = board.Size * board.Size;
+            var corners = new[] { corner1, corner2, corner3, corner4 };
+            var random = new Random();
+            return Enumerable.Range(1, 4).Select(i => corners[random.Next(4)]).First();
+        }
+
+        private int GetChildRank(IBoard board, IPlayer minimizePlayer, IPlayer maximizedPlayer) {
+            return DetermineBest(board, maximizedPlayer, minimizePlayer).Rank;
+        }
+
+        private static int GetRank(IPlayer winner, IPlayer player) {
             if (winner is Nobody)
                 return 0;
-
-            if (winner == originalPlayer)
+            if (winner == player)
                 return 10;
-            
+
             return -10;
         }
 
-        private static bool IsBestChoice(IPlayer originalPlayer, IPlayer currentPlayer, IPlayer opponent, BoardCoordinate bestChoice, BoardCoordinate choice) {
-            return (bestChoice == null) ||
-                   (originalPlayer == currentPlayer && choice.Rank < bestChoice.Rank) ||
-                   (originalPlayer == opponent && choice.Rank > bestChoice.Rank);
-        }
-
-        private IPlayer GetOpponent(IEnumerable<IPlayer> players, IPlayer player) {
-            return players.First(p => p.Symbol != player.Symbol);
+        private IPlayer GetOpponent(IPlayer player) {
+            return _players.First(p => p.Symbol != player.Symbol);
         }
     }
 }

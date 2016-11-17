@@ -173,20 +173,20 @@ namespace TicTacToe.Core.Test {
 
             var closedSpaces = newBoard.GetClosedSpaces();
             closedSpaces.Count().Should().Be(2);
-            closedSpaces.First().GetPosition(3).Should().Be(1);
-            closedSpaces.Last().GetPosition(3).Should().Be(5);
+            closedSpaces.First().ToPosition(3).Should().Be(1);
+            closedSpaces.Last().ToPosition(3).Should().Be(5);
         }
 
 
         [Theory]
         [InlineData(1, 1, 1)]
-        [InlineData(2, 2, 1)]
-        [InlineData(3, 3, 1)]
-        [InlineData(4, 1, 2)]
+        [InlineData(2, 1, 2)]
+        [InlineData(3, 1, 3)]
+        [InlineData(4, 2, 1)]
         [InlineData(5, 2, 2)]
-        [InlineData(6, 3, 2)]
-        [InlineData(7, 1, 3)]
-        [InlineData(8, 2, 3)]
+        [InlineData(6, 2, 3)]
+        [InlineData(7, 3, 1)]
+        [InlineData(8, 3, 2)]
         [InlineData(9, 3, 3)]
         public void Returns_Coordinate_From_Position_3x3(int position, int x, int y) {
             var board = BuildBoard(3);
@@ -199,20 +199,20 @@ namespace TicTacToe.Core.Test {
 
         [Theory]
         [InlineData(1, 1, 1)]
-        [InlineData(2, 2, 1)]
-        [InlineData(3, 3, 1)]
-        [InlineData(4, 4, 1)]
-        [InlineData(5, 1, 2)]
+        [InlineData(2, 1, 2)]
+        [InlineData(3, 1, 3)]
+        [InlineData(4, 1, 4)]
+        [InlineData(5, 2, 1)]
         [InlineData(6, 2, 2)]
-        [InlineData(7, 3, 2)]
-        [InlineData(8, 4, 2)]
-        [InlineData(9, 1, 3)]
-        [InlineData(10, 2, 3)]
+        [InlineData(7, 2, 3)]
+        [InlineData(8, 2, 4)]
+        [InlineData(9, 3, 1)]
+        [InlineData(10, 3, 2)]
         [InlineData(11, 3, 3)]
-        [InlineData(12, 4, 3)]
-        [InlineData(13, 1, 4)]
-        [InlineData(14, 2, 4)]
-        [InlineData(15, 3, 4)]
+        [InlineData(12, 3, 4)]
+        [InlineData(13, 4, 1)]
+        [InlineData(14, 4, 2)]
+        [InlineData(15, 4, 3)]
         [InlineData(16, 4, 4)]
         public void Returns_Coordinate_From_Position_4x4(int position, int x, int y) {
             var board = BuildBoard(4);

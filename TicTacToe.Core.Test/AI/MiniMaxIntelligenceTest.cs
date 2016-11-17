@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using FluentAssertions;
 using TicTacToe.Core.AI;
 using TicTacToe.Core.Players;
@@ -8,130 +7,58 @@ using Xunit;
 
 namespace TicTacToe.Core.Test.AI {
     public class MiniMaxIntelligenceTest {
-
         [Fact]
         public void Create_A_New_MiniMaxIntelligence() {
-            var ai = new MiniMaxIntelligence();
+
+            var ai = BuildMiniMaxIntelligence();
 
             ai.Should().NotBeNull();
             ai.Should().BeAssignableTo<IIntelligence>();
         }
 
-        public class GetBestMove {
-            [Fact]
-            public void On_A_Full_Board_Should_Be_Null() {
-                var player1 = new MockPlayer { Symbol = 'X' };
-                var player2 = new MockPlayer { Symbol = 'O' };
-                var players = new List<IPlayer> { player1, player2 };
-                var board = new MockBoard()
-                    .GetOpenSpacesStubbedToReturn(new List<BoardCoordinate>());
+        [Theory]
+        [InlineData(3)]
+        [InlineData(3)]
+        [InlineData(3)]
+        [InlineData(3)]
+        [InlineData(4)]
+        [InlineData(4)]
+        [InlineData(4)]
+        [InlineData(4)]
+        public void Returns_Random_Corner_When_No_Moves_Have_Been_Made(int boardSize) {
+            var minimizePlayer = new MockPlayer { Symbol = 'X' };
+            var maximizedPlayer = new MockPlayer { Symbol = 'O' };
+            var board = new MockBoard { Size = boardSize }.GetOpenSpacesStubbedToReturn(GetBoardCoordinates(boardSize));
+            var ai = BuildMiniMaxIntelligence(new List<IPlayer> { minimizePlayer, maximizedPlayer });
 
-                var ai = new MiniMaxIntelligence();
+            var move = ai.DetermineBest(board, minimizePlayer, maximizedPlayer);
 
-                var move = ai.GetBestMove(board, players, player1, player1);
+            var corners = new List<int> { 1, board.Size, board.Size * (board.Size - 1) + 1, board.Size * board.Size };
+            corners.Should().Contain(move.ToPosition(boardSize));
+        }
 
-                move.Should().BeNull();
-            }
+        [Fact]
+        public void Returns_Last_Open_Space_When_No_Moves_Are_Left() {
+            var minimizePlayer = new MockPlayer { Symbol = 'X' };
+            var maximizedPlayer = new MockPlayer { Symbol = 'O' };
+            var lastBoardCoordinate = new BoardCoordinate(2, 2);
+            var board = new MockBoard { Size = 3 }.GetOpenSpacesStubbedToReturn(new List<BoardCoordinate> {lastBoardCoordinate});
+            var ai = BuildMiniMaxIntelligence(new List<IPlayer> { minimizePlayer, maximizedPlayer });
 
-            [Fact]
-            public void On_A_Board_That_The_Current_Player_Can_Win() {
-                var player1 = new MockPlayer { Symbol = 'X' };
-                var player2 = new MockPlayer { Symbol = 'O' };
-                var players = new List<IPlayer> { player1, player2 };
-                var clonedBoard = new MockBoard().GetWinnerStubbedToReturn(player1);
-                var board = new MockBoard()
-                    .GetOpenSpacesStubbedToReturn(new List<BoardCoordinate> {new BoardCoordinate(1, 1)})
-                    .CloneStubbedToReturn(clonedBoard);
+            var move = ai.DetermineBest(board, minimizePlayer, maximizedPlayer);
 
-                var ai = new MiniMaxIntelligence();
+            move.Should().Be(lastBoardCoordinate);
+        }
 
-                var move = ai.GetBestMove(board, players, player1, player1);
+        private static IEnumerable<BoardCoordinate> GetBoardCoordinates(int boardSize) {
+            for (var x = 1; x <= boardSize; x++) 
+                for (var y = 1; y <= boardSize; y++) 
+                    yield return new BoardCoordinate(x, y);
+        }
 
-                move.X.Should().Be(1);
-                move.Y.Should().Be(1);
-            }
-
-            [Fact]
-            public void On_A_Board_That_The_Current_Player_Can_Lose_And_One_Space_Left_Return_Space() {
-                var player1 = new MockPlayer { Symbol = 'X' };
-                var player2 = new MockPlayer { Symbol = 'O' };
-                var players = new List<IPlayer> { player1, player2 };
-                var clonedBoard = new MockBoard().GetWinnerStubbedToReturn(player2);
-                var board = new MockBoard()
-                    .GetOpenSpacesStubbedToReturn(new List<BoardCoordinate> { new BoardCoordinate(1, 1) })
-                    .CloneStubbedToReturn(clonedBoard);
-
-                var ai = new MiniMaxIntelligence();
-
-                var move = ai.GetBestMove(board, players, player1, player1);
-
-                move.X.Should().Be(1);
-                move.Y.Should().Be(1);
-            }
-
-            [Fact]
-            public void On_A_Board_That_The_Current_Player_Can_Win_With_A_Different_Coordinate() {
-                var player1 = new MockPlayer { Symbol = 'X' };
-                var player2 = new MockPlayer { Symbol = 'O' };
-                var players = new List<IPlayer> { player1, player2 };
-                var clonedBoard1 = new MockBoard().GetWinnerStubbedToReturn(player2);
-                var clonedBoard2 = new MockBoard().GetWinnerStubbedToReturn(player1);
-                var board = new MockBoard()
-                    .GetOpenSpacesStubbedToReturn(new List<BoardCoordinate> { new BoardCoordinate(1, 1), new BoardCoordinate(2, 1) })
-                    .CloneStubbedToReturn(clonedBoard1, clonedBoard2);
-
-                var ai = new MiniMaxIntelligence();
-
-                var move = ai.GetBestMove(board, players, player1, player1);
-
-                move.X.Should().Be(1);
-                move.Y.Should().Be(1);
-            }
-
-            [Fact]
-            public void Test() {
-                var player1 = new MockPlayer { Symbol = 'X' };
-                var player2 = new MockPlayer { Symbol = 'O' };
-                var players = new List<IPlayer> { player1, player2 };
-                var clonedBoard2 = new MockBoard().GetWinnerStubbedToReturn(player1);
-                var clonedBoard1 = new MockBoard()
-                    .GetOpenSpacesStubbedToReturn(new List<BoardCoordinate> { new BoardCoordinate(2, 1) })
-                    .CloneStubbedToReturn(clonedBoard2)
-                    .GetWinnerStubbedToReturn(new Nobody(), player2);
-                var board = new MockBoard()
-                    .GetOpenSpacesStubbedToReturn(new List<BoardCoordinate> { new BoardCoordinate(1, 1), new BoardCoordinate(2, 1) })
-                    .CloneStubbedToReturn(clonedBoard1);
-
-                var ai = new MiniMaxIntelligence();
-
-                var move = ai.GetBestMove(board, players, player1, player1);
-
-                move.X.Should().Be(2);
-                move.Y.Should().Be(1);
-            }
-
-            //[Fact]
-            //public void Test2() {
-            //    var player1 = new MockPlayer { Symbol = 'X' };
-            //    var player2 = new MockPlayer { Symbol = 'O' };
-            //    var players = new List<IPlayer> { player1, player2 };
-            //    var clonedBoard2 = new MockBoard()
-            //        .GetWinnerStubbedToReturn(player1);
-            //    var clonedBoard1 = new MockBoard()
-            //        .GetOpenSpacesStubbedToReturn(new List<BoardCoordinate> { new BoardCoordinate(2, 1) })
-            //        .CloneStubbedToReturn(clonedBoard2)
-            //        .GetWinnerStubbedToReturn(player2);
-            //    var board = new MockBoard()
-            //        .GetOpenSpacesStubbedToReturn(new List<BoardCoordinate> { new BoardCoordinate(1, 1), new BoardCoordinate(2, 1) })
-            //        .CloneStubbedToReturn(clonedBoard1);
-
-            //    var ai = new MiniMaxIntelligence();
-
-            //    var move = ai.GetBestMove(board, players, player1, player1);
-
-            //    move.X.Should().Be(2);
-            //    move.Y.Should().Be(1);
-            //}
-        }        
+        private static MiniMaxIntelligence BuildMiniMaxIntelligence(IEnumerable<IPlayer> players = null) {
+            players = players ?? new List<IPlayer>();
+            return new MiniMaxIntelligence(players);
+        }
     }
 }
