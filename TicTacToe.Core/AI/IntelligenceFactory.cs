@@ -13,7 +13,7 @@ namespace TicTacToe.Core.AI {
                     return new MiniMaxIntelligence(players);
                 default:
                     throw new ArgumentException("invalid game player type");
-            }            
+            }
         }
     }
 }

@@ -4,7 +4,7 @@ using System.Text;
 
 namespace TicTacToe.Core {
     public class PatternFactory : IPatternFactory {
-        private string _defaultPattern; 
+        private string _defaultPattern;
         private int _boardSize;
         private int _spaces;
 
@@ -13,7 +13,7 @@ namespace TicTacToe.Core {
                 yield break;
 
             _boardSize = boardSize;
-            _spaces = boardSize * boardSize;
+            _spaces = boardSize*boardSize;
             _defaultPattern = new string('0', _spaces);
 
             var patterns = CreatePatterns();
@@ -31,14 +31,10 @@ namespace TicTacToe.Core {
             var vertical = CreateVerticalPatterns();
             var downwardDiagonal = CreateDownwardDiagonalPattern();
             var upwardDiagonal = CreateUpwardDiagonalPattern();
-            return horizontal
-                    .Concat(vertical)
-                    .Concat(downwardDiagonal)
-                    .Concat(upwardDiagonal);
+            return horizontal.Concat(vertical).Concat(downwardDiagonal).Concat(upwardDiagonal);
         }
 
         private IEnumerable<string> CreateHorizontalPatterns() {
-            
             for (var x = 0; x < _spaces; x += _boardSize) {
                 var pattern = new StringBuilder(_defaultPattern);
                 for (var y = 0; y < _boardSize; y++)
@@ -58,11 +54,10 @@ namespace TicTacToe.Core {
 
         private IEnumerable<string> CreateDownwardDiagonalPattern() {
             var pattern = new StringBuilder(_defaultPattern);
-            for (var i = 0; i < _spaces; i += _boardSize+ 1)
+            for (var i = 0; i < _spaces; i += _boardSize + 1)
                 ReplaceCharacter(pattern, i);
             yield return pattern.ToString();
         }
-
 
         private IEnumerable<string> CreateUpwardDiagonalPattern() {
             var pattern = new StringBuilder(_defaultPattern);

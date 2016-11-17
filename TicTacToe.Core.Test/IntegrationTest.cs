@@ -3,7 +3,6 @@ using System.Linq;
 using FluentAssertions;
 using TicTacToe.Core.AI;
 using TicTacToe.Core.Players;
-using TicTacToe.Core.Test.Mocks;
 using Xunit;
 
 namespace TicTacToe.Core.Test {

@@ -9,12 +9,9 @@ namespace TicTacToe.Core.Players {
         private const char DEFAULT_SYMBOL_1 = 'X';
         private const char DEFAULT_SYMBOL_2 = 'O';
 
-        public PlayersFactory() {
-            
-        }
         public IEnumerable<IPlayer> Create(GameSettings gameSettings) {
             var playerSettings = gameSettings.PlayerSettings ?? BuildDefaultPlayerSettings(gameSettings);
-                   
+
             switch (gameSettings.GamePlayerType) {
                 case GamePlayerType.HumanVsHuman:
                     return CreateHumanVsHuman(playerSettings).OrderBy(gameSettings.PlayerStartType);
@@ -55,6 +52,5 @@ namespace TicTacToe.Core.Players {
             yield return new HumanPlayer(playerSettings.Last());
             yield return new ComputerPlayer(playerSettings.First());
         }
-
     }
 }
