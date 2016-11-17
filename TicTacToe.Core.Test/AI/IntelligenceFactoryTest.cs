@@ -17,20 +17,22 @@ namespace TicTacToe.Core.Test.AI {
         [Fact]
         public void Throws_Exception_With_Invalid_Game_Player_Type() {
             var gameSettings = new GameSettings();
+            var players = new List<IPlayer>();
             var factory = new IntelligenceFactory();
 
-            Action action = () => factory.Create(gameSettings);
+            Action action = () => factory.Create(gameSettings, players);
 
             action.ShouldThrow<ArgumentException>();
         }
 
         [Fact]
         public void Create_Empty_Intelligence_If_All_Human() {
+            var players = new List<IPlayer>();
             var gameSettings = new GameSettings {
                 GamePlayerType = GamePlayerType.HumanVsHuman
             };
             var factory = new IntelligenceFactory();
-            var ai = factory.Create(gameSettings);
+            var ai = factory.Create(gameSettings, players);
 
             ai.Should().BeOfType<EmptyIntelligence>();
         }
@@ -38,11 +40,12 @@ namespace TicTacToe.Core.Test.AI {
         [Theory]
         [MemberData(nameof(GetGamePlayerTypesWithComputer))]
         public void Create_MiniMax_Intelligence_If_Computer_Exists(GamePlayerType gamePlayerType) {
+            var players = new List<IPlayer>();
             var gameSettings = new GameSettings {
                 GamePlayerType = gamePlayerType
             };
             var factory = new IntelligenceFactory();
-            var ai = factory.Create(gameSettings);
+            var ai = factory.Create(gameSettings, players);
 
             ai.Should().BeOfType<MiniMaxIntelligence>();
         }

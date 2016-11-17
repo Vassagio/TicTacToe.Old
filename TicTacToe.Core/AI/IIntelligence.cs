@@ -3,6 +3,6 @@ using TicTacToe.Core.Players;
 
 namespace TicTacToe.Core.AI {
     public interface IIntelligence {
-        BoardCoordinate GetBestMove(IBoard board, IEnumerable<IPlayer> players, IPlayer originalPlayer, IPlayer currentPlayer);
+        BoardCoordinate DetermineBest(IBoard board, IPlayer minimizePlayer, IPlayer maximizedPlayer);
     }
 }

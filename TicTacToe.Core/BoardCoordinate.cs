@@ -1,5 +1,7 @@
-﻿namespace TicTacToe.Core {
-    public class BoardCoordinate {
+﻿using System;
+
+namespace TicTacToe.Core {
+    public class BoardCoordinate: ICloneable {
         public int X { get; }
         public int Y { get; }
 
@@ -21,8 +23,10 @@
             return $"({X}, {Y})";
         }
 
-        public int GetPosition(int boardSize) {
-            return (boardSize * (X - 1) + (Y - 1)) + 1;
+        public object Clone() {
+            return new BoardCoordinate(X, Y) {
+                Rank = Rank
+            };
         }
     }
 }

@@ -1,10 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
 using TicTacToe.Core.Players;
 
 namespace TicTacToe.Core.AI {
-    public class EmptyIntelligence: IIntelligence {
-        public BoardCoordinate GetBestMove(IBoard board, IEnumerable<IPlayer> players, IPlayer originalPlayer, IPlayer currentPlayer) {
-            throw new System.NotImplementedException();
+    public class EmptyIntelligence : IIntelligence {
+        public BoardCoordinate DetermineBest(IBoard board, IPlayer minimizePlayer, IPlayer maximizedPlayer) {
+            throw new NotImplementedException();
         }
     }
 }
