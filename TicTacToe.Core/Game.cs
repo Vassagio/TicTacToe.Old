@@ -7,7 +7,7 @@ namespace TicTacToe.Core {
         public IBoard Board { get; }
         public IEnumerable<IPlayer> Players { get; }
 
-        public IIntelligence AI { get;  }        
+        public IIntelligence AI { get; }
 
         public Game(IBoard board, IEnumerable<IPlayer> players, IIntelligence ai) {
             Players = players;

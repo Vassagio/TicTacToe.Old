@@ -4,14 +4,14 @@ using TicTacToe.Core.Players;
 
 namespace TicTacToe.Core.Test.Mocks {
     public class MockBoard : IBoard {
+        public int Size { get; set; }
+        public IEnumerable<string> WinningPatterns { get; set; }
         private readonly Mock<IBoard> _mock;
 
         public MockBoard() {
             _mock = new Mock<IBoard>();
         }
 
-        public int Size { get; set; }
-        public IEnumerable<string> WinningPatterns { get; set; }
         public IEnumerable<BoardCoordinate> GetAllSpaces() {
             return _mock.Object.GetAllSpaces();
         }

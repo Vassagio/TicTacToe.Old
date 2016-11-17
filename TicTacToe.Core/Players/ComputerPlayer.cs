@@ -1,5 +1,5 @@
 ﻿namespace TicTacToe.Core.Players {
-    public class ComputerPlayer : Player  {
-        public ComputerPlayer(PlayerSettings settings): base(settings) {}
+    public class ComputerPlayer : Player {
+        public ComputerPlayer(PlayerSettings settings) : base(settings) {}
     }
 }

@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using TicTacToe.Core.Players;
+﻿using TicTacToe.Core.Players;
 
 namespace TicTacToe.Core.AI {
     public interface IIntelligence {

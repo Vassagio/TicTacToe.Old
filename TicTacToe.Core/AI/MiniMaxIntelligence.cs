@@ -13,7 +13,7 @@ namespace TicTacToe.Core.AI {
 
         public BoardCoordinate DetermineBest(IBoard board, IPlayer minimizePlayer, IPlayer maximizedPlayer) {
             var openSpaces = board.GetOpenSpaces();
-            if (openSpaces.Count() == board.Size * board.Size)
+            if (openSpaces.Count() == board.Size*board.Size)
                 return board.ToCoordinate(GetRandomCorner(board));
             if (openSpaces.Count() == 1)
                 return openSpaces.First();
@@ -22,8 +22,8 @@ namespace TicTacToe.Core.AI {
             var bestSpace = default(BoardCoordinate);
 
             foreach (var openSpace in openSpaces) {
-                var newBoard = (IBoard)board.Clone();
-                var currentSpace = (BoardCoordinate)openSpace.Clone();
+                var newBoard = (IBoard) board.Clone();
+                var currentSpace = (BoardCoordinate) openSpace.Clone();
                 minimizePlayer.ChoosePosition(newBoard, openSpace.ToPosition(board.Size));
                 var winner = newBoard.GetWinner(_players);
                 if (winner is Nobody && newBoard.GetOpenSpaces().Any())
@@ -33,27 +33,13 @@ namespace TicTacToe.Core.AI {
 
                 if (bestSpace == null)
                     bestSpace = currentSpace;
-                else if (minimizePlayer == opponent && currentSpace.Rank > bestSpace.Rank)
+                else if ((minimizePlayer == opponent) && (currentSpace.Rank > bestSpace.Rank))
                     bestSpace = currentSpace;
-                else if (minimizePlayer == maximizedPlayer && currentSpace.Rank < bestSpace.Rank)
+                else if ((minimizePlayer == maximizedPlayer) && (currentSpace.Rank < bestSpace.Rank))
                     bestSpace = currentSpace;
             }
-            
+
             return bestSpace;
-        }
-
-        private int GetRandomCorner(IBoard board) {
-            var corner1 = 1;
-            var corner2 = board.Size;
-            var corner3 = board.Size * (board.Size - 1) + 1;
-            var corner4 = board.Size * board.Size;
-            var corners = new[] { corner1, corner2, corner3, corner4 };
-            var random = new Random();
-            return Enumerable.Range(1, 4).Select(i => corners[random.Next(4)]).First();
-        }
-
-        private int GetChildRank(IBoard board, IPlayer minimizePlayer, IPlayer maximizedPlayer) {
-            return DetermineBest(board, maximizedPlayer, minimizePlayer).Rank;
         }
 
         private static int GetRank(IPlayer winner, IPlayer player) {
@@ -63,6 +49,25 @@ namespace TicTacToe.Core.AI {
                 return 10;
 
             return -10;
+        }
+
+        private int GetRandomCorner(IBoard board) {
+            var corner1 = 1;
+            var corner2 = board.Size;
+            var corner3 = board.Size*(board.Size - 1) + 1;
+            var corner4 = board.Size*board.Size;
+            var corners = new[] {
+                corner1,
+                corner2,
+                corner3,
+                corner4
+            };
+            var random = new Random();
+            return Enumerable.Range(1, 4).Select(i => corners[random.Next(4)]).First();
+        }
+
+        private int GetChildRank(IBoard board, IPlayer minimizePlayer, IPlayer maximizedPlayer) {
+            return DetermineBest(board, maximizedPlayer, minimizePlayer).Rank;
         }
 
         private IPlayer GetOpponent(IPlayer player) {

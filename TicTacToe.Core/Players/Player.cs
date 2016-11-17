@@ -20,7 +20,7 @@ namespace TicTacToe.Core.Players {
         public bool HasWon(IBoard board) {
             return board.WinningPatterns.Contains(board.GetCurrentPattern(this));
         }
-        
+
         public override string ToString() {
             return $"{Name}: {Symbol}";
         }

@@ -17,22 +17,20 @@ namespace TicTacToe.Core.Test.AI {
         [Fact]
         public void Throws_Exception_With_Invalid_Game_Player_Type() {
             var gameSettings = new GameSettings();
-            var players = new List<IPlayer>();
             var factory = new IntelligenceFactory();
 
-            Action action = () => factory.Create(gameSettings, players);
+            Action action = () => factory.Create(gameSettings, new List<IPlayer>());
 
             action.ShouldThrow<ArgumentException>();
         }
 
         [Fact]
         public void Create_Empty_Intelligence_If_All_Human() {
-            var players = new List<IPlayer>();
             var gameSettings = new GameSettings {
                 GamePlayerType = GamePlayerType.HumanVsHuman
             };
             var factory = new IntelligenceFactory();
-            var ai = factory.Create(gameSettings, players);
+            var ai = factory.Create(gameSettings, new List<IPlayer>());
 
             ai.Should().BeOfType<EmptyIntelligence>();
         }

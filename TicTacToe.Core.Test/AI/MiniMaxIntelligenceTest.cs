@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using FluentAssertions;
+﻿using FluentAssertions;
+using System.Collections.Generic;
 using TicTacToe.Core.AI;
 using TicTacToe.Core.Players;
 using TicTacToe.Core.Test.Mocks;

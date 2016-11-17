@@ -4,7 +4,7 @@ using TicTacToe.Core.AI;
 using TicTacToe.Core.Players;
 
 namespace TicTacToe.Core.Test.Mocks {
-    public class MockIntelligenceFactory: IIntelligenceFactory {
+    public class MockIntelligenceFactory : IIntelligenceFactory {
         private readonly Mock<IIntelligenceFactory> _mock;
 
         public MockIntelligenceFactory() {
