@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using TicTacToe.Core.AI.AlphaBetaMiniMax;
+using TicTacToe.Core.AI.MiniMax;
 using TicTacToe.Core.Players;
 
 namespace TicTacToe.Core.AI {
@@ -10,7 +12,12 @@ namespace TicTacToe.Core.AI {
                     return new EmptyIntelligence();
                 case GamePlayerType.ComputerVsComputer:
                 case GamePlayerType.HumanVsComputer:
-                    return new MiniMaxIntelligence(players);
+                    if (gameSettings.BoardSize <= 0)
+                        throw new ArgumentException("invalid board size");
+                    if (gameSettings.BoardSize <= 3)
+                        return new MiniMaxIntelligence(players);
+
+                    return new AlphaBetaMiniMaxIntelligence();
                 default:
                     throw new ArgumentException("invalid game player type");
             }

@@ -232,6 +232,8 @@ namespace TicTacToe.Core.Test {
             var winner = board.GetWinner(new List<IPlayer> {player1, player2});
 
             winner.Should().BeOfType<Nobody>();
+            player1.VerifyHasWonCalled(board);
+            player2.VerifyHasWonCalled(board);
         }
 
         [Fact]
@@ -243,6 +245,8 @@ namespace TicTacToe.Core.Test {
             var winner = board.GetWinner(new List<IPlayer> { player1, player2 });
 
             winner.Should().Be(player1);
+            player1.VerifyHasWonCalled(board);
+            player2.VerifyHasWonNotCalled();
         }
 
         [Fact]
@@ -254,6 +258,8 @@ namespace TicTacToe.Core.Test {
             var winner = board.GetWinner(new List<IPlayer> { player1, player2 });
 
             winner.Should().Be(player2);
+            player1.VerifyHasWonCalled(board);
+            player2.VerifyHasWonCalled(board);
         }
 
         [Fact]

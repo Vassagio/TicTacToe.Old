@@ -2,6 +2,7 @@
 using System.Linq;
 using FluentAssertions;
 using TicTacToe.Core.AI;
+using TicTacToe.Core.AI.MiniMax;
 using TicTacToe.Core.Players;
 using Xunit;
 
@@ -74,13 +75,13 @@ namespace TicTacToe.Core.Test {
             var gameInitializer = BuildGameInitializer();
 
             var game = gameInitializer.Create(gameSettings);
-
-            var currentPlayer = game.Players.First();
-            var opponent = game.Players.Last();
+            var contextFactory = new IntelligenceContextFactory();
+            var context = contextFactory.Create(game);
             do {
-                var move = game.AI.DetermineBest(game.Board, currentPlayer, opponent);
-                currentPlayer.ChoosePosition(game.Board, move.ToPosition(game.Board.Size));
-                PlayerSwitch(ref currentPlayer, ref opponent);
+                var move = game.AI.DetermineBest(context);
+                game.CurrentPlayer.ChoosePosition(game.Board, move.ToPosition(game.Board.Size));
+                game.SwitchPlayer();
+                context = contextFactory.Create(game);
             } while (game.Board.GetWinner(game.Players) is Nobody && game.Board.GetOpenSpaces().Any());
 
             Assert.IsType<Nobody>(game.Board.GetWinner(game.Players));
@@ -101,23 +102,18 @@ namespace TicTacToe.Core.Test {
             var gameInitializer = BuildGameInitializer();
 
             var game = gameInitializer.Create(gameSettings);
-
-            var currentPlayer = game.Players.First();
-            var opponent = game.Players.Last();
-            opponent.ChoosePosition(game.Board, position);
-            do {
-                var move = game.AI.DetermineBest(game.Board, currentPlayer, opponent);
-                currentPlayer.ChoosePosition(game.Board, move.ToPosition(game.Board.Size));
-                PlayerSwitch(ref currentPlayer, ref opponent);
+            var contextFactory = new IntelligenceContextFactory();
+            var context = contextFactory.Create(game);
+            game.CurrentPlayer.ChoosePosition(game.Board, position);
+            game.SwitchPlayer();
+            do {                
+                var move = game.AI.DetermineBest(context);
+                game.CurrentPlayer.ChoosePosition(game.Board, move.ToPosition(game.Board.Size));
+                game.SwitchPlayer();
+                context = contextFactory.Create(game);
             } while (game.Board.GetWinner(game.Players) is Nobody && game.Board.GetOpenSpaces().Any());
 
             Assert.IsType<Nobody>(game.Board.GetWinner(game.Players));
-        }
-
-        private static void PlayerSwitch(ref IPlayer currentPlayer, ref IPlayer opponent) {
-            var temp = currentPlayer;
-            currentPlayer = opponent;
-            opponent = temp;
         }
 
         private static GameSettings BuildGameSettings(int? boardSize = null, GamePlayerType? gamePlayerType = null, PlayerStartType? playerStartType = null) {

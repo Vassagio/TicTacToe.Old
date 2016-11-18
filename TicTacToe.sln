@@ -7,6 +7,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TicTacToe.Core", "TicTacToe
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TicTacToe.Core.Test", "TicTacToe.Core.Test\TicTacToe.Core.Test.csproj", "{32F8C838-DB81-454C-809E-80134F5E3456}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TicTacToe.Console.UI", "TicTacToe.Console.UI\TicTacToe.Console.UI.csproj", "{F7E5AE26-50AF-40F8-B1FA-8A788CFEC76B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TicTacToe.Console.UI.Tests", "TicTacToe.Console.UI.Tests\TicTacToe.Console.UI.Tests.csproj", "{74E565B4-BCF5-4A00-BF64-F10046102E97}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +25,14 @@ Global
 		{32F8C838-DB81-454C-809E-80134F5E3456}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{32F8C838-DB81-454C-809E-80134F5E3456}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{32F8C838-DB81-454C-809E-80134F5E3456}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F7E5AE26-50AF-40F8-B1FA-8A788CFEC76B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F7E5AE26-50AF-40F8-B1FA-8A788CFEC76B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F7E5AE26-50AF-40F8-B1FA-8A788CFEC76B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F7E5AE26-50AF-40F8-B1FA-8A788CFEC76B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{74E565B4-BCF5-4A00-BF64-F10046102E97}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{74E565B4-BCF5-4A00-BF64-F10046102E97}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{74E565B4-BCF5-4A00-BF64-F10046102E97}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{74E565B4-BCF5-4A00-BF64-F10046102E97}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

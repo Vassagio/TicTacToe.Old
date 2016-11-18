@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using TicTacToe.Core.Players;
 
-namespace TicTacToe.Core.AI {
+namespace TicTacToe.Core.AI.MiniMax {
     public class MiniMaxIntelligence : IIntelligence {
         private readonly IEnumerable<IPlayer> _players;
 
@@ -11,31 +11,32 @@ namespace TicTacToe.Core.AI {
             _players = players;
         }
 
-        public BoardCoordinate DetermineBest(IBoard board, IPlayer minimizePlayer, IPlayer maximizedPlayer) {
-            var openSpaces = board.GetOpenSpaces();
-            if (openSpaces.Count() == board.Size*board.Size)
-                return board.ToCoordinate(GetRandomCorner(board));
+        public BoardCoordinate DetermineBest(IIntelligenceContext context) {
+            var miniMaxContext = (MiniMaxContext)context;
+            var openSpaces = miniMaxContext.Board.GetOpenSpaces();
+            if (openSpaces.Count() == miniMaxContext.Board.Size* miniMaxContext.Board.Size)
+                return miniMaxContext.Board.ToCoordinate(GetRandomCorner(miniMaxContext.Board));
             if (openSpaces.Count() == 1)
                 return openSpaces.First();
 
-            var opponent = GetOpponent(minimizePlayer);
+            var opponent = GetOpponent(miniMaxContext.MinimizedPlayer);
             var bestSpace = default(BoardCoordinate);
 
             foreach (var openSpace in openSpaces) {
-                var newBoard = (IBoard) board.Clone();
+                var newBoard = (IBoard)miniMaxContext.Board.Clone();
                 var currentSpace = (BoardCoordinate) openSpace.Clone();
-                minimizePlayer.ChoosePosition(newBoard, openSpace.ToPosition(board.Size));
+                miniMaxContext.MinimizedPlayer.ChoosePosition(newBoard, openSpace.ToPosition(miniMaxContext.Board.Size));
                 var winner = newBoard.GetWinner(_players);
                 if (winner is Nobody && newBoard.GetOpenSpaces().Any())
-                    currentSpace.Rank = GetChildRank(newBoard, opponent, minimizePlayer);
+                    currentSpace.Rank = GetChildRank(newBoard, opponent, miniMaxContext.MinimizedPlayer);
                 else
-                    currentSpace.Rank = GetRank(winner, minimizePlayer);
+                    currentSpace.Rank = GetRank(winner, miniMaxContext.MinimizedPlayer);
 
                 if (bestSpace == null)
                     bestSpace = currentSpace;
-                else if ((minimizePlayer == opponent) && (currentSpace.Rank > bestSpace.Rank))
+                else if ((miniMaxContext.MinimizedPlayer == opponent) && (currentSpace.Rank > bestSpace.Rank))
                     bestSpace = currentSpace;
-                else if ((minimizePlayer == maximizedPlayer) && (currentSpace.Rank < bestSpace.Rank))
+                else if ((miniMaxContext.MinimizedPlayer == miniMaxContext.MaximizedPlayer) && (currentSpace.Rank < bestSpace.Rank))
                     bestSpace = currentSpace;
             }
 
@@ -67,7 +68,12 @@ namespace TicTacToe.Core.AI {
         }
 
         private int GetChildRank(IBoard board, IPlayer minimizePlayer, IPlayer maximizedPlayer) {
-            return DetermineBest(board, maximizedPlayer, minimizePlayer).Rank;
+            var context = new MiniMaxContext {
+                Board = board,
+                MinimizedPlayer = minimizePlayer,
+                MaximizedPlayer = maximizedPlayer
+            };
+            return DetermineBest(context).Rank;
         }
 
         private IPlayer GetOpponent(IPlayer player) {
