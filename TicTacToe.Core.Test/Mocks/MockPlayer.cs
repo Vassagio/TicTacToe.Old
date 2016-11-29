@@ -1,4 +1,5 @@
 ﻿using Moq;
+using TicTacToe.Core.AI;
 using TicTacToe.Core.Players;
 
 namespace TicTacToe.Core.Test.Mocks {
@@ -19,10 +20,28 @@ namespace TicTacToe.Core.Test.Mocks {
             return _mock.Object.HasWon(board);
         }
 
+        public BoardCoordinate GetBestMove(IIntelligenceContext context) {
+            return _mock.Object.GetBestMove(context);
+        }
+
+        public IIntelligence GetIntelligence() {
+            return _mock.Object.GetIntelligence();
+        }
+
         public MockPlayer HasWonStubbedToReturn(bool hasWon) {
             _mock.Setup(m => m.HasWon(It.IsAny<IBoard>())).Returns(hasWon);
             return this;
         }    
+
+        public MockPlayer GetBestMoveStubbedToReturn(BoardCoordinate coordinate) {
+            _mock.Setup(m => m.GetBestMove(It.IsAny<IIntelligenceContext>())).Returns(coordinate);
+            return this;
+        }
+
+        public MockPlayer GetIntelligenceStubbedToReturn(IIntelligence ai) {
+            _mock.Setup(m => m.GetIntelligence()).Returns(ai);
+            return this;
+        }
 
         public void VerifyChoosePositionCalled(IBoard board, int position, int times = 1) {
             _mock.Verify(m => m.ChoosePosition(board, position), Times.Exactly(times));
@@ -38,6 +57,22 @@ namespace TicTacToe.Core.Test.Mocks {
 
         public void VerifyHasWonNotCalled() {
             _mock.Verify(m => m.HasWon(It.IsAny<IBoard>()), Times.Never);
+        }
+
+        public void VerifyGetBestMoveCalled(IIntelligenceContext context, int times = 1) {
+            _mock.Verify(m => m.GetBestMove(context), Times.Exactly(times));
+        }
+
+        public void VerifyGetBestMoveNotCalled() {
+            _mock.Verify(m => m.GetBestMove(It.IsAny<IIntelligenceContext>()), Times.Never);
+        }
+
+        public void VerifyGetIntelligenceCalled(int times = 1) {
+            _mock.Verify(m => m.GetIntelligence(), Times.Exactly(times));
+        }
+
+        public void VerifyGetIntelligenceNotCalled() {
+            _mock.Verify(m => m.GetIntelligence(), Times.Never);
         }
     }
 }

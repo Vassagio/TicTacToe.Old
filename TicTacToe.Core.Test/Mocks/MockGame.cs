@@ -26,17 +26,8 @@ namespace TicTacToe.Core.Test.Mocks {
             _mock.Object.MakeMove(context);
         }
 
-        public IIntelligence GetIntelligence() {
-            return _mock.Object.GetIntelligence();
-        }
-
         public MockGame IsOverStubbedToReturn(bool isOver) {
             _mock.Setup(m => m.IsOver()).Returns(isOver);
-            return this;
-        }
-
-        public MockGame GetIntelligenceStubbedToReturn(IIntelligence ai) {
-            _mock.Setup(m => m.GetIntelligence()).Returns(ai);
             return this;
         }
 
@@ -62,14 +53,6 @@ namespace TicTacToe.Core.Test.Mocks {
 
         public void VerifyMakeMoveNotCalled() {
             _mock.Verify(m => m.MakeMove(It.IsAny<IIntelligenceContext>()), Times.Never);
-        }
-
-        public void VerifyGetIntelligenceCalled(int times = 1) {
-            _mock.Verify(m => m.GetIntelligence(), Times.Exactly(times));
-        }
-
-        public void VerifyGetIntelligenceNotCalled() {
-            _mock.Verify(m => m.GetIntelligence(), Times.Never);
         }
     }
 }

@@ -11,6 +11,5 @@ namespace TicTacToe.Core {
         void SwitchPlayer();
         bool IsOver();
         void MakeMove(IIntelligenceContext context);
-        IIntelligence GetIntelligence();
     }
 }

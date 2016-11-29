@@ -66,32 +66,29 @@ namespace TicTacToe.Core.Test {
         public void Returns_Board_Coordinate_With_Context() {
             var context = new MockIntelligenceContext();
             var boardCoordinate = new BoardCoordinate(1, 1);
-            var ai = new MockIntelligence().DetermineBestStubbedToReturn(boardCoordinate);
-            var game = BuildGame(ai: ai);
+            var player1 = new MockPlayer().GetBestMoveStubbedToReturn(boardCoordinate);
+            var players = new List<IPlayer> { player1 };
+            var board = new MockBoard {
+                Size = 3
+            };
+            var game = BuildGame(board, players);
 
             game.MakeMove(context);
 
-            ai.VerifyDetermineBestCalled(context);
+            player1.VerifyGetBestMoveCalled(context);
+            player1.VerifyChoosePositionCalled(board, boardCoordinate.ToPosition(board.Size));
         }
 
-        [Fact]
-        public void Get_Intelligence_Returns_AI() {
-            var ai = new MockIntelligence();
-            var game = BuildGame(ai: ai);
 
-            game.GetIntelligence().Should().Be(ai);
-        }
-
-        private static Game BuildGame(IBoard board = null, IEnumerable<IPlayer> players = null, IPatternFactory patternFactory = null, IIntelligence ai = null) {
+        private static Game BuildGame(IBoard board = null, IEnumerable<IPlayer> players = null, IPatternFactory patternFactory = null) {
             patternFactory = patternFactory ?? new MockPatternFactory();
             board = board ?? new Board(3, patternFactory);
             players = players ?? new List<IPlayer> {
                           new MockPlayer(),
                           new MockPlayer()
                       };
-            ai = ai ?? new MockIntelligence();
 
-            return new Game(board, players, ai, players.First());
+            return new Game(board, players, players.First());
         }
     }
 }

@@ -19,11 +19,7 @@ namespace TicTacToe.Console.UI {
             var settings = new GameSettings {
                 BoardSize = 3,
                 GamePlayerType = GamePlayerType.ComputerVsComputer,
-                PlayerStartType = PlayerStartType.FirstPlayerFirst,
-                PlayerSettings = new List<PlayerSettings> {
-                    new PlayerSettings {Symbol = 'X' },
-                    new PlayerSettings {Symbol = 'O' },
-                }
+                PlayerStartType = PlayerStartType.FirstPlayerFirst                
             };
 
             Run(container.GetInstance<Application>(), settings);

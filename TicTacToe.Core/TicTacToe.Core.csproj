@@ -41,7 +41,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AI\AlphaBetaMiniMax\AlphaBetaMiniMaxIntelligence.cs" />
-    <Compile Include="AI\EmptyIntelligence.cs" />
+    <Compile Include="AI\HumanContext.cs" />
+    <Compile Include="AI\HumanIntelligence.cs" />
     <Compile Include="AI\IIntelligenceContextFactory.cs" />
     <Compile Include="AI\IIntelligenceContext.cs" />
     <Compile Include="AI\IIntelligenceFactory.cs" />
@@ -61,13 +62,12 @@
     <Compile Include="IBoard.cs" />
     <Compile Include="IGame.cs" />
     <Compile Include="IGameInitializer.cs" />
+    <Compile Include="IInputOutput.cs" />
     <Compile Include="IPatternFactory.cs" />
     <Compile Include="PlayerSettings.cs" />
     <Compile Include="PlayersExtension.cs" />
     <Compile Include="Players\GamePlayerType.cs" />
     <Compile Include="AI\IIntelligence.cs" />
-    <Compile Include="Players\IComputerPlayer.cs" />
-    <Compile Include="Players\IHumanPlayer.cs" />
     <Compile Include="Players\IPlayer.cs" />
     <Compile Include="IToken.cs" />
     <Compile Include="PatternFactory.cs" />

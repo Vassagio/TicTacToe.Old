@@ -53,16 +53,18 @@ namespace TicTacToe.Core.Test {
 
         [Fact]
         public void Creates_New_Game_With_Players() {
+            var ai = new MockIntelligence();
             var gameSettings = BuildGameSettings();
+            var aiFactory = new MockIntelligenceFactory().CreateStubbedToReturn(ai);
             var playersFactory = new MockPlayersFactory().CreateStubbedToReturn(new List<IPlayer> {new MockPlayer()});
-            var initializer = BuildGameInitializer(playersFactory);
+            var initializer = BuildGameInitializer(playersFactory, aiFactory: aiFactory);
 
             var game = initializer.Create(gameSettings);
 
             game.Should().NotBeNull();
             game.Board.Size.Should().Be(3);
             game.Players.Count().Should().Be(1);
-            playersFactory.VerifyCreatedCalled(gameSettings);
+            playersFactory.VerifyCreatedCalled(gameSettings, ai);
         }
 
         [Fact]

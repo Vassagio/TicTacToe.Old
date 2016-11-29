@@ -18,7 +18,9 @@ namespace TicTacToe.Core.Test.AI {
 
         [Fact]
         public void Throws_Exception_With_Invalid_AI() {
-            var game = new MockGame().GetIntelligenceStubbedToReturn(null);
+            var game = new MockGame {
+                CurrentPlayer = new MockPlayer()
+            };
             var factory = new IntelligenceContextFactory();
 
             Action action = () => factory.Create(game);
@@ -28,18 +30,16 @@ namespace TicTacToe.Core.Test.AI {
 
         [Fact]
         public void Creates_MiniMax_Context_When_AI_Is_MiniMax() {
-            var ai = new MiniMaxIntelligence(new List<IPlayer>());
+            var ai = new MiniMaxIntelligence();
             var board = new MockBoard();
-            var player1 = new MockPlayer { Symbol = 'X' };
-            var player2 = new MockPlayer { Symbol = 'O' };
+            var player1 = new MockPlayer { Symbol = 'X' }.GetIntelligenceStubbedToReturn(ai);
+            var player2 = new MockPlayer { Symbol = 'O' }.GetIntelligenceStubbedToReturn(ai);
+            var players = new List<IPlayer> { player1, player2 };
             var game = new MockGame {
                 Board = board,
                 CurrentPlayer = player1,
-                Players = new List<IPlayer> {
-                    player1,
-                    player2
-                }
-            }.GetIntelligenceStubbedToReturn(ai);
+                Players = players
+            };
             var factory = new IntelligenceContextFactory();
 
             var context = factory.Create(game);
@@ -49,12 +49,21 @@ namespace TicTacToe.Core.Test.AI {
             minimaxContext.Board.Should().Be(board);
             minimaxContext.MinimizedPlayer.Should().Be(player1);
             minimaxContext.MaximizedPlayer.Should().Be(player2);
+            minimaxContext.Players.Should().BeEquivalentTo(players);
         }
 
         [Fact]
         public void Creates_AlphaBetaMiniMax_Context_When_AI_Is_MiniMax() {
             var ai = new AlphaBetaMiniMaxIntelligence();
-            var game = new MockGame().GetIntelligenceStubbedToReturn(ai);
+            var board = new MockBoard();
+            var player1 = new MockPlayer { Symbol = 'X' }.GetIntelligenceStubbedToReturn(ai);
+            var player2 = new MockPlayer { Symbol = 'O' }.GetIntelligenceStubbedToReturn(ai);
+            var players = new List<IPlayer> { player1, player2 };
+            var game = new MockGame {
+                Board = board,
+                CurrentPlayer = player1,
+                Players = players
+            };
             var factory = new IntelligenceContextFactory();
 
             var context = factory.Create(game);
