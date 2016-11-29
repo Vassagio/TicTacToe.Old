@@ -50,12 +50,14 @@
     <Compile Include="AI\AlphaBetaMiniMax\AlphaBetaMiniMaxContext.cs" />
     <Compile Include="AI\MiniMax\MiniMaxContext.cs" />
     <Compile Include="AI\MiniMax\MiniMaxIntelligence.cs" />
+    <Compile Include="Application.cs" />
     <Compile Include="Board.cs" />
     <Compile Include="BoardCoordinate.cs" />
     <Compile Include="BoardExtensions.cs" />
     <Compile Include="Game.cs" />
     <Compile Include="GameInitializer.cs" />
     <Compile Include="GameSettings.cs" />
+    <Compile Include="IApplication.cs" />
     <Compile Include="IBoard.cs" />
     <Compile Include="IGame.cs" />
     <Compile Include="IGameInitializer.cs" />
@@ -64,6 +66,8 @@
     <Compile Include="PlayersExtension.cs" />
     <Compile Include="Players\GamePlayerType.cs" />
     <Compile Include="AI\IIntelligence.cs" />
+    <Compile Include="Players\IComputerPlayer.cs" />
+    <Compile Include="Players\IHumanPlayer.cs" />
     <Compile Include="Players\IPlayer.cs" />
     <Compile Include="IToken.cs" />
     <Compile Include="PatternFactory.cs" />
@@ -74,6 +78,13 @@
     <Compile Include="Players\Player.cs" />
     <Compile Include="Players\PlayersFactory.cs" />
     <Compile Include="Players\PlayerStartType.cs" />
+    <Compile Include="States\GameEndedState.cs" />
+    <Compile Include="States\GameNotStartedState.cs" />
+    <Compile Include="States\GameStartedState.cs" />
+    <Compile Include="States\IGameState.cs" />
+    <Compile Include="States\Player2TurnState.cs" />
+    <Compile Include="States\Player1TurnState.cs" />
+    <Compile Include="States\PlayerTurnState.cs" />
     <Compile Include="Token.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

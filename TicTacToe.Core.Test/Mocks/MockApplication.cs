@@ -1,8 +1,7 @@
 ﻿using Moq;
-using TicTacToe.Core;
 
-namespace TicTacToe.Console.UI.Tests {
-    internal class MockApplication : IApplication {
+namespace TicTacToe.Core.Test.Mocks {
+    public class MockApplication : IApplication {
         private readonly Mock<IApplication> _mock;
 
         public MockApplication() {

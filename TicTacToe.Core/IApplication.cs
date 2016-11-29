@@ -1,6 +1,4 @@
-﻿using TicTacToe.Core;
-
-namespace TicTacToe.Console.UI {
+﻿namespace TicTacToe.Core {
     public interface IApplication {
         void Run(GameSettings settings);
     }

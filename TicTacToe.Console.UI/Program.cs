@@ -8,11 +8,12 @@ namespace TicTacToe.Console.UI {
     public class Program {
         public static void Main(string[] args) {
             var container = new Container(c => {
-                c.For <IApplication>().Use<Application>();
+                c.For<IApplication>().Use<Application>();
                 c.For<IGameInitializer>().Use<GameInitializer>();
                 c.For<IPlayersFactory>().Use<PlayersFactory>();
                 c.For<IPatternFactory>().Use<PatternFactory>();
                 c.For<IIntelligenceFactory>().Use<IntelligenceFactory>();
+                c.For<IIntelligenceContextFactory>().Use<IntelligenceContextFactory>();
             });
 
             var settings = new GameSettings {
@@ -29,8 +30,6 @@ namespace TicTacToe.Console.UI {
         }
 
         public static void Run(IApplication application, GameSettings settings) {
-            
-
             application.Run(settings);
         }
     }

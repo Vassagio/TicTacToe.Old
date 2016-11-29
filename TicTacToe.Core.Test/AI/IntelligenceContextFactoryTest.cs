@@ -18,7 +18,7 @@ namespace TicTacToe.Core.Test.AI {
 
         [Fact]
         public void Throws_Exception_With_Invalid_AI() {
-            var game = new MockGame();
+            var game = new MockGame().GetIntelligenceStubbedToReturn(null);
             var factory = new IntelligenceContextFactory();
 
             Action action = () => factory.Create(game);
@@ -28,6 +28,7 @@ namespace TicTacToe.Core.Test.AI {
 
         [Fact]
         public void Creates_MiniMax_Context_When_AI_Is_MiniMax() {
+            var ai = new MiniMaxIntelligence(new List<IPlayer>());
             var board = new MockBoard();
             var player1 = new MockPlayer { Symbol = 'X' };
             var player2 = new MockPlayer { Symbol = 'O' };
@@ -37,9 +38,8 @@ namespace TicTacToe.Core.Test.AI {
                 Players = new List<IPlayer> {
                     player1,
                     player2
-                },
-                AI = new MiniMaxIntelligence(new List<IPlayer>())
-            };
+                }
+            }.GetIntelligenceStubbedToReturn(ai);
             var factory = new IntelligenceContextFactory();
 
             var context = factory.Create(game);
@@ -53,9 +53,8 @@ namespace TicTacToe.Core.Test.AI {
 
         [Fact]
         public void Creates_AlphaBetaMiniMax_Context_When_AI_Is_MiniMax() {
-            var game = new MockGame {
-                AI = new AlphaBetaMiniMaxIntelligence()
-            };
+            var ai = new AlphaBetaMiniMaxIntelligence();
+            var game = new MockGame().GetIntelligenceStubbedToReturn(ai);
             var factory = new IntelligenceContextFactory();
 
             var context = factory.Create(game);

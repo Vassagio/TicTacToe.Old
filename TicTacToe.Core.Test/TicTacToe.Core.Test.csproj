@@ -76,15 +76,20 @@
     <Compile Include="AI\IntelligenceContextFactoryTest.cs" />
     <Compile Include="AI\IntelligenceFactoryTest.cs" />
     <Compile Include="AI\MiniMaxIntelligenceTest.cs" />
+    <Compile Include="ApplicationTest.cs" />
     <Compile Include="BoardCoordinateTest.cs" />
     <Compile Include="BoardTest.cs" />
     <Compile Include="GameInitializerTest.cs" />
     <Compile Include="GameTest.cs" />
     <Compile Include="IntegrationTest.cs" />
+    <Compile Include="Mocks\MockApplication.cs" />
     <Compile Include="Mocks\MockBoard.cs" />
+    <Compile Include="Mocks\MockComputerPlayer.cs" />
     <Compile Include="Mocks\MockGame.cs" />
     <Compile Include="Mocks\MockGameInitializer.cs" />
+    <Compile Include="Mocks\MockHumanPlayer.cs" />
     <Compile Include="Mocks\MockIntelligence.cs" />
+    <Compile Include="Mocks\MockIntelligenceContext.cs" />
     <Compile Include="Mocks\MockIntelligenceContextFactory.cs" />
     <Compile Include="Mocks\MockIntelligenceFactory.cs" />
     <Compile Include="Mocks\MockPatternFactory.cs" />
@@ -96,6 +101,11 @@
     <Compile Include="Players\HumanPlayerTest.cs" />
     <Compile Include="Players\PlayersFactoryTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="States\GameEndedStateTest.cs" />
+    <Compile Include="States\GameNotStartedStateTest.cs" />
+    <Compile Include="States\GameStartedStateTest.cs" />
+    <Compile Include="States\Player2TurnStateTest.cs" />
+    <Compile Include="States\Player1TurnStateTest.cs" />
     <Compile Include="TokenTest.cs" />
   </ItemGroup>
   <ItemGroup>

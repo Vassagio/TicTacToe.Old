@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Moq;
 using TicTacToe.Core.AI;
 
@@ -16,6 +17,12 @@ namespace TicTacToe.Core.Test.Mocks {
 
         public MockIntelligence DetermineBestStubbedToReturn(BoardCoordinate coordinate) {
             _mock.Setup(m => m.DetermineBest(It.IsAny<IIntelligenceContext>())).Returns(coordinate);
+            return this;
+        }
+
+        public MockIntelligence DetermineBestStubbedToReturn(params BoardCoordinate[] coordinates) {
+            var queue = new Queue<BoardCoordinate>(coordinates);
+            _mock.Setup(m => m.DetermineBest(It.IsAny<IIntelligenceContext>())).Returns(queue.Dequeue());
             return this;
         }
 

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using Moq;
 using TicTacToe.Core.Players;
 
@@ -48,6 +49,12 @@ namespace TicTacToe.Core.Test.Mocks {
 
         public MockBoard GetOpenSpacesStubbedToReturn(IEnumerable<BoardCoordinate> coordinates) {
             _mock.Setup(m => m.GetOpenSpaces()).Returns(coordinates);
+            return this;
+        }
+
+        public MockBoard GetOpenSpacesStubbedToReturn(params IEnumerable<BoardCoordinate>[] coordinateLists) {
+            var queue = new Queue<IEnumerable<BoardCoordinate>>(coordinateLists);
+            _mock.Setup(m => m.GetOpenSpaces()).Returns(queue.Dequeue());
             return this;
         }
 

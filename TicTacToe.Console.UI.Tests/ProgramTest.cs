@@ -1,5 +1,6 @@
 ﻿
 using TicTacToe.Core;
+using TicTacToe.Core.Test.Mocks;
 using Xunit;
 
 namespace TicTacToe.Console.UI.Tests {
