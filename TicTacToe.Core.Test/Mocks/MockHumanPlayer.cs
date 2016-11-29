@@ -1,16 +1,15 @@
-﻿using Moq;
+﻿using System;
+using Moq;
 using TicTacToe.Core.Players;
 
 namespace TicTacToe.Core.Test.Mocks {
-    public class MockPlayer : IPlayer {
+    public class MockHumanPlayer : IHumanPlayer {
+        private readonly Mock<IHumanPlayer> _mock;
+        public MockHumanPlayer() {
+            _mock = new Mock<IHumanPlayer>();
+        }
         public string Name { get; set; }
         public char Symbol { get; set; }
-        private readonly Mock<IPlayer> _mock;
-
-        public MockPlayer() {
-            _mock = new Mock<IPlayer>();
-        }
-
         public void ChoosePosition(IBoard board, int position) {
             _mock.Object.ChoosePosition(board, position);
         }
@@ -19,10 +18,10 @@ namespace TicTacToe.Core.Test.Mocks {
             return _mock.Object.HasWon(board);
         }
 
-        public MockPlayer HasWonStubbedToReturn(bool hasWon) {
+        public MockHumanPlayer HasWonStubbedToReturn(bool hasWon) {
             _mock.Setup(m => m.HasWon(It.IsAny<IBoard>())).Returns(hasWon);
             return this;
-        }    
+        }
 
         public void VerifyChoosePositionCalled(IBoard board, int position, int times = 1) {
             _mock.Verify(m => m.ChoosePosition(board, position), Times.Exactly(times));

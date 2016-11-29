@@ -1,6 +1,7 @@
 ﻿using FluentAssertions;
 using System.Collections.Generic;
 using TicTacToe.Core.AI;
+using TicTacToe.Core.AI.MiniMax;
 using TicTacToe.Core.Players;
 using TicTacToe.Core.Test.Mocks;
 using Xunit;
@@ -29,9 +30,14 @@ namespace TicTacToe.Core.Test.AI {
             var minimizePlayer = new MockPlayer { Symbol = 'X' };
             var maximizedPlayer = new MockPlayer { Symbol = 'O' };
             var board = new MockBoard { Size = boardSize }.GetOpenSpacesStubbedToReturn(GetBoardCoordinates(boardSize));
+            var context = new MiniMaxContext {
+                Board = board,
+                MinimizedPlayer = minimizePlayer,
+                MaximizedPlayer = maximizedPlayer
+            };
             var ai = BuildMiniMaxIntelligence(new List<IPlayer> { minimizePlayer, maximizedPlayer });
 
-            var move = ai.DetermineBest(board, minimizePlayer, maximizedPlayer);
+            var move = ai.DetermineBest(context);
 
             var corners = new List<int> { 1, board.Size, board.Size * (board.Size - 1) + 1, board.Size * board.Size };
             corners.Should().Contain(move.ToPosition(boardSize));
@@ -43,9 +49,14 @@ namespace TicTacToe.Core.Test.AI {
             var maximizedPlayer = new MockPlayer { Symbol = 'O' };
             var lastBoardCoordinate = new BoardCoordinate(2, 2);
             var board = new MockBoard { Size = 3 }.GetOpenSpacesStubbedToReturn(new List<BoardCoordinate> {lastBoardCoordinate});
+            var context = new MiniMaxContext {
+                Board = board,
+                MinimizedPlayer = minimizePlayer,
+                MaximizedPlayer = maximizedPlayer
+            };
             var ai = BuildMiniMaxIntelligence(new List<IPlayer> { minimizePlayer, maximizedPlayer });
 
-            var move = ai.DetermineBest(board, minimizePlayer, maximizedPlayer);
+            var move = ai.DetermineBest(context);
 
             move.Should().Be(lastBoardCoordinate);
         }
