@@ -4,13 +4,7 @@ using System.Linq;
 using TicTacToe.Core.Players;
 
 namespace TicTacToe.Core.AI.MiniMax {
-    public class MiniMaxIntelligence : IIntelligence {
-        private readonly IEnumerable<IPlayer> _players;
-
-        public MiniMaxIntelligence(IEnumerable<IPlayer> players) {
-            _players = players;
-        }
-
+    public class MiniMaxIntelligence : IIntelligence {       
         public BoardCoordinate DetermineBest(IIntelligenceContext context) {
             var miniMaxContext = (MiniMaxContext)context;
             var openSpaces = miniMaxContext.Board.GetOpenSpaces();
@@ -19,16 +13,16 @@ namespace TicTacToe.Core.AI.MiniMax {
             if (openSpaces.Count() == 1)
                 return openSpaces.First();
 
-            var opponent = GetOpponent(miniMaxContext.MinimizedPlayer);
+            var opponent = GetOpponent(miniMaxContext);
             var bestSpace = default(BoardCoordinate);
 
             foreach (var openSpace in openSpaces) {
                 var newBoard = (IBoard)miniMaxContext.Board.Clone();
                 var currentSpace = (BoardCoordinate) openSpace.Clone();
                 miniMaxContext.MinimizedPlayer.ChoosePosition(newBoard, openSpace.ToPosition(miniMaxContext.Board.Size));
-                var winner = newBoard.GetWinner(_players);
+                var winner = newBoard.GetWinner(miniMaxContext.Players);
                 if (winner is Nobody && newBoard.GetOpenSpaces().Any())
-                    currentSpace.Rank = GetChildRank(newBoard, opponent, miniMaxContext.MinimizedPlayer);
+                    currentSpace.Rank = GetChildRank(newBoard, miniMaxContext.Players, opponent, miniMaxContext.MinimizedPlayer);
                 else
                     currentSpace.Rank = GetRank(winner, miniMaxContext.MinimizedPlayer);
 
@@ -67,17 +61,18 @@ namespace TicTacToe.Core.AI.MiniMax {
             return Enumerable.Range(1, 4).Select(i => corners[random.Next(4)]).First();
         }
 
-        private int GetChildRank(IBoard board, IPlayer minimizePlayer, IPlayer maximizedPlayer) {
+        private int GetChildRank(IBoard board, IEnumerable<IPlayer> players, IPlayer minimizePlayer, IPlayer maximizedPlayer) {
             var context = new MiniMaxContext {
                 Board = board,
                 MinimizedPlayer = minimizePlayer,
-                MaximizedPlayer = maximizedPlayer
+                MaximizedPlayer = maximizedPlayer,
+                Players = players
             };
             return DetermineBest(context).Rank;
         }
 
-        private IPlayer GetOpponent(IPlayer player) {
-            return _players.First(p => p.Symbol != player.Symbol);
+        private IPlayer GetOpponent(MiniMaxContext context) {
+            return context.Players.First(p => p.Symbol != context.MinimizedPlayer.Symbol);
         }
     }
 }

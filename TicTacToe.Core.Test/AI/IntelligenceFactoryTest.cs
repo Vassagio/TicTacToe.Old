@@ -21,7 +21,7 @@ namespace TicTacToe.Core.Test.AI {
             var gameSettings = new GameSettings();
             var factory = new IntelligenceFactory();
 
-            Action action = () => factory.Create(gameSettings, new List<IPlayer>());
+            Action action = () => factory.Create(gameSettings);
 
             action.ShouldThrow<ArgumentException>();
         }
@@ -32,9 +32,9 @@ namespace TicTacToe.Core.Test.AI {
                 GamePlayerType = GamePlayerType.HumanVsHuman
             };
             var factory = new IntelligenceFactory();
-            var ai = factory.Create(gameSettings, new List<IPlayer>());
+            var ai = factory.Create(gameSettings);
 
-            ai.Should().BeOfType<EmptyIntelligence>();
+            ai.Should().BeOfType<HumanIntelligence>();
         }
 
         [Theory]
@@ -45,7 +45,7 @@ namespace TicTacToe.Core.Test.AI {
                 GamePlayerType = gamePlayerType
             };
             var factory = new IntelligenceFactory();
-            var ai = factory.Create(gameSettings, new List<IPlayer>());
+            var ai = factory.Create(gameSettings);
 
             ai.Should().BeOfType<MiniMaxIntelligence>();
         }
@@ -58,7 +58,7 @@ namespace TicTacToe.Core.Test.AI {
                 GamePlayerType = gamePlayerType
             };
             var factory = new IntelligenceFactory();
-            var ai = factory.Create(gameSettings, new List<IPlayer>());
+            var ai = factory.Create(gameSettings);
 
             ai.Should().BeOfType<MiniMaxIntelligence>();
         }
@@ -71,7 +71,7 @@ namespace TicTacToe.Core.Test.AI {
                 GamePlayerType = gamePlayerType
             };
             var factory = new IntelligenceFactory();
-            var ai = factory.Create(gameSettings, new List<IPlayer>());
+            var ai = factory.Create(gameSettings);
 
             ai.Should().BeOfType<AlphaBetaMiniMaxIntelligence>();
         }

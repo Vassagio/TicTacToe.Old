@@ -84,10 +84,8 @@
     <Compile Include="IntegrationTest.cs" />
     <Compile Include="Mocks\MockApplication.cs" />
     <Compile Include="Mocks\MockBoard.cs" />
-    <Compile Include="Mocks\MockComputerPlayer.cs" />
     <Compile Include="Mocks\MockGame.cs" />
     <Compile Include="Mocks\MockGameInitializer.cs" />
-    <Compile Include="Mocks\MockHumanPlayer.cs" />
     <Compile Include="Mocks\MockIntelligence.cs" />
     <Compile Include="Mocks\MockIntelligenceContext.cs" />
     <Compile Include="Mocks\MockIntelligenceContextFactory.cs" />

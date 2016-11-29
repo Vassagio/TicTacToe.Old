@@ -9,14 +9,11 @@ namespace TicTacToe.Core {
 
         public IEnumerable<IPlayer> Players { get; }
 
-        private readonly IIntelligence _ai;
-
         public IPlayer CurrentPlayer { get; private set; }
 
-        public Game(IBoard board, IEnumerable<IPlayer> players, IIntelligence ai, IPlayer startingPlayer) {
+        public Game(IBoard board, IEnumerable<IPlayer> players, IPlayer startingPlayer) {
             Players = players;
             Board = board;
-            _ai = ai;
             CurrentPlayer = startingPlayer;
         }
 
@@ -29,12 +26,8 @@ namespace TicTacToe.Core {
         }
 
         public void MakeMove(IIntelligenceContext context) {
-            var move = _ai.DetermineBest(context);
+            var move = CurrentPlayer.GetBestMove(context);
             CurrentPlayer.ChoosePosition(Board, move.ToPosition(Board.Size));
-        }
-
-        public IIntelligence GetIntelligence() {
-            return _ai;
         }
     }
 }

@@ -18,11 +18,11 @@ namespace TicTacToe.Core {
 
         public IGame Create(GameSettings gameSettings) {
             var board = new Board(gameSettings.BoardSize, _patternFactory);
-            var players = _playersFactory.Create(gameSettings);
-            var ai = _aiFactory.Create(gameSettings, players);
+            var ai = _aiFactory.Create(gameSettings);
+            var players = _playersFactory.Create(gameSettings, ai);
             var startingPlayer = GetStartingPlayer(gameSettings.PlayerStartType, players);
 
-            return new Game(board, players, ai, startingPlayer);
+            return new Game(board, players, startingPlayer);
         }
 
         private IPlayer GetStartingPlayer(PlayerStartType playerStartType, IEnumerable<IPlayer> players) {

@@ -29,13 +29,15 @@ namespace TicTacToe.Core.Test.AI {
         public void Returns_Random_Corner_When_No_Moves_Have_Been_Made(int boardSize) {
             var minimizePlayer = new MockPlayer { Symbol = 'X' };
             var maximizedPlayer = new MockPlayer { Symbol = 'O' };
+            var players = new List<IPlayer> { minimizePlayer, maximizedPlayer };
             var board = new MockBoard { Size = boardSize }.GetOpenSpacesStubbedToReturn(GetBoardCoordinates(boardSize));
             var context = new MiniMaxContext {
                 Board = board,
                 MinimizedPlayer = minimizePlayer,
-                MaximizedPlayer = maximizedPlayer
+                MaximizedPlayer = maximizedPlayer,
+                Players = players
             };
-            var ai = BuildMiniMaxIntelligence(new List<IPlayer> { minimizePlayer, maximizedPlayer });
+            var ai = BuildMiniMaxIntelligence();
 
             var move = ai.DetermineBest(context);
 
@@ -47,14 +49,16 @@ namespace TicTacToe.Core.Test.AI {
         public void Returns_Last_Open_Space_When_No_Moves_Are_Left() {
             var minimizePlayer = new MockPlayer { Symbol = 'X' };
             var maximizedPlayer = new MockPlayer { Symbol = 'O' };
+            var players = new List<IPlayer> { minimizePlayer, maximizedPlayer };
             var lastBoardCoordinate = new BoardCoordinate(2, 2);
             var board = new MockBoard { Size = 3 }.GetOpenSpacesStubbedToReturn(new List<BoardCoordinate> {lastBoardCoordinate});
             var context = new MiniMaxContext {
                 Board = board,
                 MinimizedPlayer = minimizePlayer,
-                MaximizedPlayer = maximizedPlayer
+                MaximizedPlayer = maximizedPlayer,
+                Players = players
             };
-            var ai = BuildMiniMaxIntelligence(new List<IPlayer> { minimizePlayer, maximizedPlayer });
+            var ai = BuildMiniMaxIntelligence();
 
             var move = ai.DetermineBest(context);
 
@@ -67,9 +71,8 @@ namespace TicTacToe.Core.Test.AI {
                     yield return new BoardCoordinate(x, y);
         }
 
-        private static MiniMaxIntelligence BuildMiniMaxIntelligence(IEnumerable<IPlayer> players = null) {
-            players = players ?? new List<IPlayer>();
-            return new MiniMaxIntelligence(players);
+        private static MiniMaxIntelligence BuildMiniMaxIntelligence() {
+            return new MiniMaxIntelligence();
         }
     }
 }

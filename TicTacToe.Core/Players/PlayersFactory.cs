@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using TicTacToe.Core.AI;
 
 namespace TicTacToe.Core.Players {
     public class PlayersFactory : IPlayersFactory {
@@ -9,8 +10,8 @@ namespace TicTacToe.Core.Players {
         private const char DEFAULT_SYMBOL_1 = 'X';
         private const char DEFAULT_SYMBOL_2 = 'O';
 
-        public IEnumerable<IPlayer> Create(GameSettings gameSettings) {
-            var playerSettings = gameSettings.PlayerSettings ?? BuildDefaultPlayerSettings(gameSettings);
+        public IEnumerable<IPlayer> Create(GameSettings gameSettings, IIntelligence ai) {
+            var playerSettings = gameSettings.PlayerSettings ?? BuildDefaultPlayerSettings(gameSettings, ai);
 
             switch (gameSettings.GamePlayerType) {
                 case GamePlayerType.HumanVsHuman:
@@ -24,19 +25,23 @@ namespace TicTacToe.Core.Players {
             }
         }
 
-        private static IEnumerable<PlayerSettings> BuildDefaultPlayerSettings(GameSettings gameSettings) {
+        private static IEnumerable<PlayerSettings> BuildDefaultPlayerSettings(GameSettings gameSettings, IIntelligence ai) {
             var player1Number = gameSettings.GamePlayerType == GamePlayerType.HumanVsComputer ? string.Empty : "1";
             var player1Type = gameSettings.GamePlayerType == GamePlayerType.ComputerVsComputer ? DEFAULT_COMPUTER_NAME : DEFAULT_HUMAN_NAME;
+            var player1Intelligence = gameSettings.GamePlayerType != GamePlayerType.ComputerVsComputer ? new HumanIntelligence() : ai;
             yield return new PlayerSettings {
                 Name = $"{player1Number} {player1Type}",
-                Symbol = DEFAULT_SYMBOL_1
+                Symbol = DEFAULT_SYMBOL_1,
+                Intelligence = player1Intelligence
             };
 
             var player2Number = gameSettings.GamePlayerType == GamePlayerType.HumanVsComputer ? string.Empty : "2";
             var player2Type = gameSettings.GamePlayerType == GamePlayerType.HumanVsHuman ? DEFAULT_HUMAN_NAME : DEFAULT_COMPUTER_NAME;
+            var player2Intelligence = gameSettings.GamePlayerType != GamePlayerType.HumanVsHuman ? ai : new HumanIntelligence();
             yield return new PlayerSettings {
                 Name = $"{player2Number} {player2Type}",
-                Symbol = DEFAULT_SYMBOL_2
+                Symbol = DEFAULT_SYMBOL_2,
+                Intelligence = player2Intelligence
             };
         }
 
