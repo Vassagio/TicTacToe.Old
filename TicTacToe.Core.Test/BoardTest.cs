@@ -48,14 +48,15 @@ namespace TicTacToe.Core.Test {
 
             [Fact]
             public void Returns_List_Of_Open_Coordinates() {
+                var player = new MockPlayer { Symbol = 'X' };
                 var board = BuildBoard();
-                board.AddToken(new MockToken(), new BoardCoordinate(1, 1));
-                board.AddToken(new MockToken(), new BoardCoordinate(1, 2));
-                board.AddToken(new MockToken(), new BoardCoordinate(1, 3));
-                board.AddToken(new MockToken(), new BoardCoordinate(2, 1));
-                board.AddToken(new MockToken(), new BoardCoordinate(2, 3));
-                board.AddToken(new MockToken(), new BoardCoordinate(3, 1));
-                board.AddToken(new MockToken(), new BoardCoordinate(3, 2));
+                board.SetCoordinate(player, new BoardCoordinate(1, 1));
+                board.SetCoordinate(player, new BoardCoordinate(1, 2));
+                board.SetCoordinate(player, new BoardCoordinate(1, 3));
+                board.SetCoordinate(player, new BoardCoordinate(2, 1));
+                board.SetCoordinate(player, new BoardCoordinate(2, 3));
+                board.SetCoordinate(player, new BoardCoordinate(3, 1));
+                board.SetCoordinate(player, new BoardCoordinate(3, 2));
 
                 var spaces = board.GetOpenSpaces();
 
@@ -64,9 +65,10 @@ namespace TicTacToe.Core.Test {
 
             [Fact]
             public void Returns_List_Of_Closed_Coordinates() {
+                var player = new MockPlayer { Symbol = 'X' };
                 var board = BuildBoard();
-                board.AddToken(new MockToken(), new BoardCoordinate(1, 2));
-                board.AddToken(new MockToken(), new BoardCoordinate(2, 3));
+                board.SetCoordinate(player, new BoardCoordinate(1, 2));
+                board.SetCoordinate(player, new BoardCoordinate(2, 3));
 
                 var spaces = board.GetClosedSpaces();
 
@@ -74,24 +76,26 @@ namespace TicTacToe.Core.Test {
             }
         }
 
-        public class AddToken {
+        public class SetCoordinate {
             [Fact]
             public void Does_Not_Throw_Exception_When_Adding_A_Token_To_An_Unoccupied_Square() {
+                var player = new MockPlayer { Symbol = 'X' };
                 var board = BuildBoard();
 
-                Action action = () => board.AddToken(new MockToken(), new BoardCoordinate(2, 1));
+                Action action = () => board.SetCoordinate(player, new BoardCoordinate(2, 1));
 
                 action.ShouldNotThrow<ArgumentException>();
             }
 
             [Fact]
             public void Throws_Exception_When_Adding_A_Piece_To_An_Occupied_Square() {
+                var player = new MockPlayer { Symbol = 'X' };
                 var board = BuildBoard();
                 var boardCoordinate = new BoardCoordinate(2, 1);
 
-                board.AddToken(new MockToken(), boardCoordinate);
+                board.SetCoordinate(player, boardCoordinate);
 
-                Action action = () => board.AddToken(new MockToken(), boardCoordinate);
+                Action action = () => board.SetCoordinate(player, boardCoordinate);
 
                 action.ShouldThrow<ArgumentException>();
             }
@@ -104,9 +108,10 @@ namespace TicTacToe.Core.Test {
             [InlineData(6, -23, 8)]
             [InlineData(7, 20, 8)]
             public void Throws_Exception_When_BoardCoordinate_Is_Not_Within_Limits(int x, int y, int boardSize) {
+                var player = new MockPlayer { Symbol = 'X' };
                 var board = BuildBoard(boardSize);
 
-                Action action = () => board.AddToken(new MockToken(), new BoardCoordinate(x, y));
+                Action action = () => board.SetCoordinate(player, new BoardCoordinate(x, y));
 
                 action.ShouldThrow<ArgumentException>();
             }
@@ -116,11 +121,11 @@ namespace TicTacToe.Core.Test {
         public class GetCurrentPlayer {
             [Fact]
             public void Returns_The_Current_Pattern_Of_The_Board_Based_On_A_Single_Player_Single_Move() {
+                var player = new MockPlayer { Symbol = 'X' };
                 var board = BuildBoard(3);
-                var player1 = new MockPlayer();
-                board.AddToken(new Token(player1), new BoardCoordinate(1, 1));
+                board.SetCoordinate(player, new BoardCoordinate(1, 1));
 
-                var pattern = board.GetCurrentPattern(player1);
+                var pattern = board.GetCurrentPattern(player);
 
                 pattern.Should().Be("100000000");
             }
@@ -130,8 +135,8 @@ namespace TicTacToe.Core.Test {
                 var board = BuildBoard(3);
                 var player1 = new MockPlayer {Symbol = 'X'};
                 var player2 = new MockPlayer {Symbol = 'O'};
-                board.AddToken(new Token(player1), new BoardCoordinate(1, 1));
-                board.AddToken(new Token(player2), new BoardCoordinate(2, 2));
+                board.SetCoordinate(player1, new BoardCoordinate(1, 1));
+                board.SetCoordinate(player2, new BoardCoordinate(2, 2));
 
                 var pattern1 = board.GetCurrentPattern(player1);
                 var pattern2 = board.GetCurrentPattern(player2);
@@ -145,12 +150,12 @@ namespace TicTacToe.Core.Test {
                 var board = BuildBoard(3);
                 var player1 = new MockPlayer {Symbol = 'X'};
                 var player2 = new MockPlayer { Symbol = 'O'};
-                board.AddToken(new Token(player1), new BoardCoordinate(1, 1));
-                board.AddToken(new Token(player1), new BoardCoordinate(1, 2));
-                board.AddToken(new Token(player1), new BoardCoordinate(2, 1));
-                board.AddToken(new Token(player2), new BoardCoordinate(2, 2));
-                board.AddToken(new Token(player2), new BoardCoordinate(2, 3));
-                board.AddToken(new Token(player2), new BoardCoordinate(3, 3));
+                board.SetCoordinate(player1, new BoardCoordinate(1, 1));
+                board.SetCoordinate(player1, new BoardCoordinate(1, 2));
+                board.SetCoordinate(player1, new BoardCoordinate(2, 1));
+                board.SetCoordinate(player2, new BoardCoordinate(2, 2));
+                board.SetCoordinate(player2, new BoardCoordinate(2, 3));
+                board.SetCoordinate(player2, new BoardCoordinate(3, 3));
 
 
                 var pattern1 = board.GetCurrentPattern(player1);
@@ -166,8 +171,8 @@ namespace TicTacToe.Core.Test {
             var board = BuildBoard(3);
             var player1 = new MockPlayer { Symbol = 'X' };
             var player2 = new MockPlayer { Symbol = 'O' };
-            board.AddToken(new Token(player1), new BoardCoordinate(1, 1));
-            board.AddToken(new Token(player2), new BoardCoordinate(2, 2));
+            board.SetCoordinate(player1, new BoardCoordinate(1, 1));
+            board.SetCoordinate(player2, new BoardCoordinate(2, 2));
 
             var newBoard = (Board)board.Clone();
 

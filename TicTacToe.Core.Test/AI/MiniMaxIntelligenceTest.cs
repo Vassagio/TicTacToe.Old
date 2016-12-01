@@ -27,16 +27,8 @@ namespace TicTacToe.Core.Test.AI {
         [InlineData(4)]
         [InlineData(4)]
         public void Returns_Random_Corner_When_No_Moves_Have_Been_Made(int boardSize) {
-            var minimizePlayer = new MockPlayer { Symbol = 'X' };
-            var maximizedPlayer = new MockPlayer { Symbol = 'O' };
-            var players = new List<IPlayer> { minimizePlayer, maximizedPlayer };
             var board = new MockBoard { Size = boardSize }.GetOpenSpacesStubbedToReturn(GetBoardCoordinates(boardSize));
-            var context = new MiniMaxContext {
-                Board = board,
-                MinimizedPlayer = minimizePlayer,
-                MaximizedPlayer = maximizedPlayer,
-                Players = players
-            };
+            var context = BuildMiniMaxContext(board: board);
             var ai = BuildMiniMaxIntelligence();
 
             var move = ai.DetermineBest(context);
@@ -45,30 +37,34 @@ namespace TicTacToe.Core.Test.AI {
             corners.Should().Contain(move.ToPosition(boardSize));
         }
 
-        [Fact]
-        public void Returns_Last_Open_Space_When_No_Moves_Are_Left() {
-            var minimizePlayer = new MockPlayer { Symbol = 'X' };
-            var maximizedPlayer = new MockPlayer { Symbol = 'O' };
-            var players = new List<IPlayer> { minimizePlayer, maximizedPlayer };
-            var lastBoardCoordinate = new BoardCoordinate(2, 2);
-            var board = new MockBoard { Size = 3 }.GetOpenSpacesStubbedToReturn(new List<BoardCoordinate> {lastBoardCoordinate});
-            var context = new MiniMaxContext {
-                Board = board,
-                MinimizedPlayer = minimizePlayer,
-                MaximizedPlayer = maximizedPlayer,
-                Players = players
-            };
-            var ai = BuildMiniMaxIntelligence();
+        //[Fact]
+        //public void Returns_Last_Open_Space_When_No_Moves_Are_Left() {
+        //    var lastBoardCoordinate = new BoardCoordinate(2, 2);
+        //    var board = new MockBoard { Size = 3 }.GetOpenSpacesStubbedToReturn(new List<BoardCoordinate> { lastBoardCoordinate });
+        //    var context = BuildMiniMaxContext(board: board);
+        //    var ai = BuildMiniMaxIntelligence();
 
-            var move = ai.DetermineBest(context);
+        //    var move = ai.DetermineBest(context);
 
-            move.Should().Be(lastBoardCoordinate);
-        }
+        //    move.Should().Be(lastBoardCoordinate);
+        //}
 
         private static IEnumerable<BoardCoordinate> GetBoardCoordinates(int boardSize) {
-            for (var x = 1; x <= boardSize; x++) 
-                for (var y = 1; y <= boardSize; y++) 
+            for (var x = 1; x <= boardSize; x++)
+                for (var y = 1; y <= boardSize; y++)
                     yield return new BoardCoordinate(x, y);
+        }
+    
+        private static MiniMaxContext BuildMiniMaxContext(IPlayer minimizePlayer = null, IPlayer maximizePlayer = null, IBoard board = null) {
+            minimizePlayer = minimizePlayer ?? new MockPlayer { Symbol = 'X' };
+            maximizePlayer = maximizePlayer ?? new MockPlayer { Symbol = 'O' };
+            var players = new List<IPlayer> { minimizePlayer, maximizePlayer };
+            board = board ?? new MockBoard { Size = 3 };
+            return new MiniMaxContext {
+                Board = board,
+                MinimizedPlayer = minimizePlayer,
+                Players = players
+            };
         }
 
         private static MiniMaxIntelligence BuildMiniMaxIntelligence() {

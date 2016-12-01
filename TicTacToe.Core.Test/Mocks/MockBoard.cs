@@ -14,6 +14,11 @@ namespace TicTacToe.Core.Test.Mocks {
             _mock = new Mock<IBoard>();
         }
 
+        public void Preset(IPlayer player, params BoardCoordinate[] coordinates) {
+            foreach (var coordinate in coordinates)
+                SetCoordinate(player, coordinate);
+        }
+
         public IEnumerable<BoardCoordinate> GetAllSpaces() {
             return _mock.Object.GetAllSpaces();
         }
@@ -26,8 +31,8 @@ namespace TicTacToe.Core.Test.Mocks {
             return _mock.Object.GetClosedSpaces();
         }
 
-        public void AddToken(IToken token, BoardCoordinate coordinate) {
-            _mock.Object.AddToken(token, coordinate);
+        public void SetCoordinate(IPlayer player, BoardCoordinate coordinate) {
+            _mock.Object.SetCoordinate(player, coordinate);
         }
 
         public string GetCurrentPattern(IPlayer player) {
@@ -40,6 +45,10 @@ namespace TicTacToe.Core.Test.Mocks {
 
         public IPlayer GetWinner(IEnumerable<IPlayer> players) {
             return _mock.Object.GetWinner(players);
+        }
+
+        public bool IsPositionOpen(int position) {
+            return _mock.Object.IsPositionOpen(position);
         }
 
         public MockBoard GetAllSpacesStubbedToReturn(IEnumerable<BoardCoordinate> coordinates) {
@@ -114,12 +123,12 @@ namespace TicTacToe.Core.Test.Mocks {
             _mock.Verify(m => m.GetClosedSpaces(), Times.Never);
         }
 
-        public void VerifyAddTokenCalled(IToken token, BoardCoordinate coordinate, int times = 1) {
-            _mock.Verify(m => m.AddToken(token, coordinate), Times.Exactly(times));
+        public void VerifySetCoordinateCalled(IPlayer player, BoardCoordinate coordinate, int times = 1) {
+            _mock.Verify(m => m.SetCoordinate(player, coordinate), Times.Exactly(times));
         }
 
         public void VerifyAddTokenNotCalled() {
-            _mock.Verify(m => m.AddToken(It.IsAny<IToken>(), It.IsAny<BoardCoordinate>()), Times.Never);
+            _mock.Verify(m => m.SetCoordinate(It.IsAny<IPlayer>(), It.IsAny<BoardCoordinate>()), Times.Never);
         }
 
         public void VerifyGetCurrentPatternCalled(IPlayer player, int times = 1) {

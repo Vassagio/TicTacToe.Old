@@ -14,7 +14,7 @@ namespace TicTacToe.Core {
 
             _boardSize = boardSize;
             _spaces = boardSize*boardSize;
-            _defaultPattern = new string('0', _spaces);
+            _defaultPattern = new string('.', _spaces);
 
             var patterns = CreatePatterns();
             foreach (var pattern in patterns)

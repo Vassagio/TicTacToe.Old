@@ -3,8 +3,8 @@
 namespace TicTacToe.Core {
     public static class BoardExtensions {
         public static BoardCoordinate ToCoordinate(this IBoard board, int position) {
-            var x = (int) Math.Ceiling(position/(double) board.Size);
-            var y = position%board.Size == 0 ? board.Size : position%board.Size;
+            var x = (int) Math.Ceiling((position + 1)/(double) board.Size);
+            var y = (position+1)%board.Size == 0 ? board.Size : (position + 1)%board.Size;
             return new BoardCoordinate(x, y);
         }
 

@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using FluentAssertions;
+using TicTacToe.Core.AI;
+using TicTacToe.Core.AI.Human;
 using TicTacToe.Core.Players;
 using TicTacToe.Core.Test.Mocks;
 using Xunit;
@@ -12,7 +14,7 @@ namespace TicTacToe.Core.Test.Players {
         public void Throws_Exception_With_Invalid_Game_Player_Type() {
             var ai = new MockIntelligence();
             var gameSettings = new GameSettings();
-            var factory = new PlayersFactory();
+            var factory = BuildPlayersFactory();
 
             Action action = () => factory.Create(gameSettings, ai);
 
@@ -26,7 +28,7 @@ namespace TicTacToe.Core.Test.Players {
             var gameSettings = new GameSettings {
                 GamePlayerType = gamePlayerType
             };
-            var factory = new PlayersFactory();
+            var factory = BuildPlayersFactory();
 
             Action action = () => factory.Create(gameSettings, ai);
 
@@ -40,7 +42,7 @@ namespace TicTacToe.Core.Test.Players {
                 GamePlayerType = GamePlayerType.HumanVsHuman,
                 PlayerStartType = PlayerStartType.FirstPlayerFirst
             };
-            var factory = new PlayersFactory();
+            var factory = BuildPlayersFactory();
 
             var players = factory.Create(gameSettings, ai);
 
@@ -56,7 +58,7 @@ namespace TicTacToe.Core.Test.Players {
                 GamePlayerType = GamePlayerType.HumanVsHuman,
                 PlayerStartType = PlayerStartType.LastPlayerFirst
             };
-            var factory = new PlayersFactory();
+            var factory = BuildPlayersFactory();
 
             var players = factory.Create(gameSettings, ai);
 
@@ -72,7 +74,7 @@ namespace TicTacToe.Core.Test.Players {
                 GamePlayerType = GamePlayerType.ComputerVsComputer,
                 PlayerStartType = PlayerStartType.FirstPlayerFirst
             };
-            var factory = new PlayersFactory();
+            var factory = BuildPlayersFactory();
 
             var players = factory.Create(gameSettings, ai);
 
@@ -88,7 +90,7 @@ namespace TicTacToe.Core.Test.Players {
                 GamePlayerType = GamePlayerType.ComputerVsComputer,
                 PlayerStartType = PlayerStartType.LastPlayerFirst
             };
-            var factory = new PlayersFactory();
+            var factory = BuildPlayersFactory();
 
             var players = factory.Create(gameSettings, ai);
 
@@ -104,7 +106,7 @@ namespace TicTacToe.Core.Test.Players {
                 GamePlayerType = GamePlayerType.HumanVsComputer,
                 PlayerStartType = PlayerStartType.FirstPlayerFirst
             };
-            var factory = new PlayersFactory();
+            var factory = BuildPlayersFactory();
 
             var players = factory.Create(gameSettings, ai);
 
@@ -120,7 +122,7 @@ namespace TicTacToe.Core.Test.Players {
                 GamePlayerType = GamePlayerType.HumanVsComputer,
                 PlayerStartType = PlayerStartType.LastPlayerFirst
             };
-            var factory = new PlayersFactory();
+            var factory = BuildPlayersFactory();
 
             var players = factory.Create(gameSettings, ai);
 
@@ -146,7 +148,7 @@ namespace TicTacToe.Core.Test.Players {
                     }
                 }
             };
-            var factory = new PlayersFactory();
+            var factory = BuildPlayersFactory();
 
             var players = factory.Create(gameSettings, ai);
 
@@ -159,6 +161,11 @@ namespace TicTacToe.Core.Test.Players {
             last.Should().BeOfType<HumanPlayer>();
             last.Name.Should().Be("Jane Doe");
             last.Symbol.Should().Be('#');
+        }
+
+        private static PlayersFactory BuildPlayersFactory(IHumanIntelligence humanAI = null) {
+            humanAI = humanAI ?? new MockHumanIntelligence();
+            return new PlayersFactory(humanAI);
         }
 
         private static IEnumerable<object[]> GetGamePlayerTypes() {

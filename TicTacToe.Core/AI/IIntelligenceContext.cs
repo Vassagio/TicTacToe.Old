@@ -1,3 +1,5 @@
 ﻿namespace TicTacToe.Core.AI {
-    public interface IIntelligenceContext {}
+    public interface IIntelligenceContext {
+        IBoard Board { get; set; }
+    }
 }

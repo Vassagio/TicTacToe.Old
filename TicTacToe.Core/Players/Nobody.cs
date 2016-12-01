@@ -16,7 +16,7 @@ namespace TicTacToe.Core.Players {
         }
 
         public IIntelligence GetIntelligence() {
-            return new HumanIntelligence();
+            return null;
         }
     }
 }

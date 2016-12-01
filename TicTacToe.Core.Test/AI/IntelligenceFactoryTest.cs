@@ -3,15 +3,17 @@ using System.Collections.Generic;
 using FluentAssertions;
 using TicTacToe.Core.AI;
 using TicTacToe.Core.AI.AlphaBetaMiniMax;
+using TicTacToe.Core.AI.Human;
 using TicTacToe.Core.AI.MiniMax;
 using TicTacToe.Core.Players;
+using TicTacToe.Core.Test.Mocks;
 using Xunit;
 
 namespace TicTacToe.Core.Test.AI {
     public class IntelligenceFactoryTest {
         [Fact]
         public void Creates_A_New_Intelligence_Factory() {
-            var factory = new IntelligenceFactory();
+            var factory = BuildIntelligenceFactory();
 
             factory.Should().BeAssignableTo<IIntelligenceFactory>();
         }
@@ -19,7 +21,7 @@ namespace TicTacToe.Core.Test.AI {
         [Fact]
         public void Throws_Exception_With_Invalid_Game_Player_Type() {
             var gameSettings = new GameSettings();
-            var factory = new IntelligenceFactory();
+            var factory = BuildIntelligenceFactory();
 
             Action action = () => factory.Create(gameSettings);
 
@@ -31,7 +33,7 @@ namespace TicTacToe.Core.Test.AI {
             var gameSettings = new GameSettings {
                 GamePlayerType = GamePlayerType.HumanVsHuman
             };
-            var factory = new IntelligenceFactory();
+            var factory = BuildIntelligenceFactory();
             var ai = factory.Create(gameSettings);
 
             ai.Should().BeOfType<HumanIntelligence>();
@@ -44,7 +46,7 @@ namespace TicTacToe.Core.Test.AI {
                 BoardSize = boardSize,
                 GamePlayerType = gamePlayerType
             };
-            var factory = new IntelligenceFactory();
+            var factory = BuildIntelligenceFactory();
             var ai = factory.Create(gameSettings);
 
             ai.Should().BeOfType<MiniMaxIntelligence>();
@@ -57,7 +59,7 @@ namespace TicTacToe.Core.Test.AI {
                 BoardSize = boardSize,
                 GamePlayerType = gamePlayerType
             };
-            var factory = new IntelligenceFactory();
+            var factory = BuildIntelligenceFactory();
             var ai = factory.Create(gameSettings);
 
             ai.Should().BeOfType<MiniMaxIntelligence>();
@@ -70,7 +72,7 @@ namespace TicTacToe.Core.Test.AI {
                 BoardSize = boardSize,
                 GamePlayerType = gamePlayerType
             };
-            var factory = new IntelligenceFactory();
+            var factory = BuildIntelligenceFactory();
             var ai = factory.Create(gameSettings);
 
             ai.Should().BeOfType<AlphaBetaMiniMaxIntelligence>();
@@ -95,6 +97,11 @@ namespace TicTacToe.Core.Test.AI {
             yield return new object[] { 4, GamePlayerType.HumanVsComputer };
             yield return new object[] { 100, GamePlayerType.ComputerVsComputer };
             yield return new object[] { 100, GamePlayerType.HumanVsComputer };
+        }
+
+        private static IntelligenceFactory BuildIntelligenceFactory(IInputOutput io = null) {
+            io = io ?? new MockInputOutput();
+            return new IntelligenceFactory(io);
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using System.Text.RegularExpressions;
 using TicTacToe.Core.AI;
 
 namespace TicTacToe.Core.Players {
@@ -15,15 +16,25 @@ namespace TicTacToe.Core.Players {
         }
 
         public void ChoosePosition(IBoard board, int position) {
-            var token = new Token(this);
-            board.AddToken(token, board.ToCoordinate(position));
+            var coordinate = board.ToCoordinate(position - 1);
+            board.SetCoordinate(this, coordinate);
         }
 
         public bool HasWon(IBoard board) {
-            return board.WinningPatterns.Contains(board.GetCurrentPattern(this));
+            var currentPattern = board.GetCurrentPattern(this);
+            foreach (var winningPattern in board.WinningPatterns) {
+                var r = new Regex(winningPattern);
+                var m = r.Match(currentPattern);
+                if (m.Success)
+                    return true;
+            }
+
+            return false;
         }
 
-        public abstract BoardCoordinate GetBestMove(IIntelligenceContext context);
+        public BoardCoordinate GetBestMove(IIntelligenceContext context) {
+            return AI.DetermineBest(context);
+        }
         public IIntelligence GetIntelligence() {
             return AI;
         }
