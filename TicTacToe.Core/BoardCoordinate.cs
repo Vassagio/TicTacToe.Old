@@ -6,6 +6,7 @@ namespace TicTacToe.Core {
         public int Y { get; }
 
         public int Rank { get; set; }
+        public char Symbol { get; set; }
 
         public BoardCoordinate(int x, int y) {
             X = x;
@@ -14,7 +15,8 @@ namespace TicTacToe.Core {
 
         public object Clone() {
             return new BoardCoordinate(X, Y) {
-                Rank = Rank
+                Rank = Rank,
+                Symbol = Symbol
             };
         }
 

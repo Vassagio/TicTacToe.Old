@@ -51,8 +51,10 @@ namespace TicTacToe.Core.Test.Players {
         public class IsWinner {
             [Fact]
             public void Returns_True_When_Winning_Pattern_Matches() {
-                var patternFactory = new MockPatternFactory().CreateStubbedToReturn(new List<string> { "1100" });
-                var board = new Board(2, patternFactory);
+                var board = new MockBoard {
+                    Size = 3,
+                    WinningPatterns = new List<string> { "1100" }
+                }.GetCurrentPatternStubbedToReturn("1100");
                 var player = BuildHumanPlayer();
                 player.ChoosePosition(board, 1);
                 player.ChoosePosition(board, 2);
@@ -64,8 +66,10 @@ namespace TicTacToe.Core.Test.Players {
 
             [Fact]
             public void Returns_False_When_Winning_Pattern_Matches() {
-                var patternFactory = new MockPatternFactory().CreateStubbedToReturn(new List<string> { "1010" });
-                var board = new Board(2, patternFactory);
+                var board = new MockBoard {
+                    Size = 3,
+                    WinningPatterns = new List<string> { "1010" }
+                }.GetCurrentPatternStubbedToReturn("1100");
                 var player = BuildHumanPlayer();
 
                 var isWinner = player.HasWon(board);

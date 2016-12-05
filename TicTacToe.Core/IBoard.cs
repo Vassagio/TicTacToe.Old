@@ -8,9 +8,10 @@ namespace TicTacToe.Core {
         IEnumerable<BoardCoordinate> GetAllSpaces();
         IEnumerable<BoardCoordinate> GetOpenSpaces();
         IEnumerable<BoardCoordinate> GetClosedSpaces();
-        void AddToken(IToken token, BoardCoordinate coordinate);
+        void SetCoordinate(IPlayer player, BoardCoordinate coordinate);
         string GetCurrentPattern(IPlayer player);
         object Clone();
         IPlayer GetWinner(IEnumerable<IPlayer> players);
+        bool IsPositionOpen(int position);
     }
 }

@@ -8,5 +8,7 @@ namespace TicTacToe.Core.Test.Mocks {
         public MockIntelligenceContext() {
             _mock = new Mock<IIntelligenceContext>();
         }
+
+        public IBoard Board { get; set; }
     }
 }

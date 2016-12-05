@@ -67,7 +67,7 @@ namespace TicTacToe.Core.Test.States {
             contextFactory.VerifyCreatedCalled(game);
         }
 
-        private static GameStartedState BuildGameStartedState(GameSettings settings = null, IGameInitializer gameInitializer = null, IIntelligenceContextFactory contextFactory = null) {
+        private static GameStartedState BuildGameStartedState(GameSettings settings = null, IGameInitializer gameInitializer = null, IIntelligenceContextFactory contextFactory = null, IInputOutput io = null) {
             settings = settings ?? new GameSettings {
                 BoardSize = 3,
                 GamePlayerType = GamePlayerType.HumanVsHuman,
@@ -75,7 +75,8 @@ namespace TicTacToe.Core.Test.States {
             };
             gameInitializer = gameInitializer ?? new MockGameInitializer();
             contextFactory = contextFactory ?? new MockIntelligenceContextFactory();
-            return new GameStartedState(settings, gameInitializer, contextFactory);
+            io = io ?? new MockInputOutput();
+            return new GameStartedState(settings, gameInitializer, contextFactory, io);
         }
     }
 }

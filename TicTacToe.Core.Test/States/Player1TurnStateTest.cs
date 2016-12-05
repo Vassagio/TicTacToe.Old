@@ -43,7 +43,9 @@ namespace TicTacToe.Core.Test.States {
 
         [Fact]
         public void Handles_Should_Return_Player_2_Turn_When_Game_Has_Not_Been_Won() {
-            var game = new MockGame().IsOverStubbedToReturn(false);
+            var game = new MockGame {
+                Board = new MockBoard()
+            }.IsOverStubbedToReturn(false);
             var state = BuildPlayer1TurnState(game);
 
             var newState = state.Handle();
@@ -54,7 +56,9 @@ namespace TicTacToe.Core.Test.States {
 
         [Fact]
         public void Handles_Should_Return_Game_Ended_When_Game_Has_Been_Won() {
-            var game = new MockGame().IsOverStubbedToReturn(true);
+            var game = new MockGame {
+                Board = new MockBoard()
+            }.IsOverStubbedToReturn(true);
             var state = BuildPlayer1TurnState(game);
 
             var newState = state.Handle();
@@ -63,11 +67,12 @@ namespace TicTacToe.Core.Test.States {
             game.VerifyIsOverCalled();
         }
 
-        private static Player1TurnState BuildPlayer1TurnState(IGame game = null, IIntelligenceContextFactory contextFactory = null, IIntelligenceContext context = null) {
+        private static Player1TurnState BuildPlayer1TurnState(IGame game = null, IIntelligenceContextFactory contextFactory = null, IIntelligenceContext context = null, IInputOutput io = null) {
             game = game ?? new MockGame();
             contextFactory = contextFactory ?? new MockIntelligenceContextFactory();
             context = context ?? new MockIntelligenceContext();
-            return new Player1TurnState(game, contextFactory, context);
+            io = io ?? new MockInputOutput();
+            return new Player1TurnState(game, contextFactory, context, io);
         }
     }
 }

@@ -23,7 +23,7 @@ namespace TicTacToe.Core.Test.States {
             newState.Should().NotBeNull().And.BeOfType<GameStartedState>();
         }
 
-        private static GameNotStartedState BuildGameNotStartedState(GameSettings settings = null, IGameInitializer gameInitializer = null, IIntelligenceContextFactory contextFactory = null) {
+        private static GameNotStartedState BuildGameNotStartedState(GameSettings settings = null, IGameInitializer gameInitializer = null, IIntelligenceContextFactory contextFactory = null, IInputOutput io = null) {
             settings = settings ?? new GameSettings {
                 BoardSize = 3,
                 GamePlayerType = GamePlayerType.HumanVsHuman,
@@ -31,7 +31,8 @@ namespace TicTacToe.Core.Test.States {
             };
             gameInitializer = gameInitializer ?? new MockGameInitializer();
             contextFactory = contextFactory ?? new MockIntelligenceContextFactory();
-            return new GameNotStartedState(settings, gameInitializer, contextFactory);
+            io = io ?? new MockInputOutput();
+            return new GameNotStartedState(settings, gameInitializer, contextFactory, io);
         }
     }
 }

@@ -2,6 +2,7 @@
 using StructureMap;
 using TicTacToe.Core;
 using TicTacToe.Core.AI;
+using TicTacToe.Core.AI.Human;
 using TicTacToe.Core.Players;
 
 namespace TicTacToe.Console.UI {
@@ -14,11 +15,13 @@ namespace TicTacToe.Console.UI {
                 c.For<IPatternFactory>().Use<PatternFactory>();
                 c.For<IIntelligenceFactory>().Use<IntelligenceFactory>();
                 c.For<IIntelligenceContextFactory>().Use<IntelligenceContextFactory>();
+                c.For<IInputOutput>().Use<ConsoleIO>();
+                c.For<IHumanIntelligence>().Use<HumanIntelligence>();
             });
 
             var settings = new GameSettings {
                 BoardSize = 3,
-                GamePlayerType = GamePlayerType.ComputerVsComputer,
+                GamePlayerType = GamePlayerType.HumanVsComputer,
                 PlayerStartType = PlayerStartType.FirstPlayerFirst                
             };
 
