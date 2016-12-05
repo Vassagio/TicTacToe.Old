@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Diagnostics;
 
 namespace TicTacToe.Core {
     public static class BoardExtensions {
         public static BoardCoordinate ToCoordinate(this IBoard board, int position) {
-            var x = (int) Math.Ceiling((position + 1)/(double) board.Size);
-            var y = (position+1)%board.Size == 0 ? board.Size : (position + 1)%board.Size;
+            //Debug.Assert(position >= 1 && position <= board.Size * board.Size, $"Position is {position}");
+            var x = (int) Math.Ceiling(position/(double) board.Size);
+            var y = position%board.Size == 0 ? board.Size : position%board.Size;
             return new BoardCoordinate(x, y);
         }
 

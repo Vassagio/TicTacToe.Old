@@ -18,7 +18,7 @@ namespace TicTacToe.Core {
             WinningPatterns = patternsFactory.Create(size);
             Coordinates = new BoardCoordinate[size * size];
             for (int i = 0; i < Coordinates.Length; i++)
-                Coordinates[i] = this.ToCoordinate(i);
+                Coordinates[i] = this.ToCoordinate(i+1);
         }
 
         protected Board(int size, BoardCoordinate[] coordinates, IEnumerable<string> winningPatterns) {
@@ -51,17 +51,17 @@ namespace TicTacToe.Core {
                 throw new ArgumentException("coordinate occupied");
 
             coordinate.Symbol = player.Symbol;
-            Coordinates[coordinate.ToPosition(Size) - 1] = coordinate;
+            Coordinates[coordinate.ToPosition(Size)-1] = coordinate;
         }
 
         public string GetCurrentPattern(IPlayer player) {
             var pattern = new StringBuilder(new string('0', Coordinates.Length));
             foreach (var coordinate in Coordinates) {
-                if (coordinate != null && coordinate.Symbol == player.Symbol) {
-                    var position = coordinate.ToPosition(Size);
-                    pattern.Remove(position-1, 1);
-                    pattern.Insert(position-1, "1");
-                }
+                if (coordinate == null || coordinate.Symbol != player.Symbol)
+                    continue;
+                var position = coordinate.ToPosition(Size);
+                pattern.Remove(position-1, 1);
+                pattern.Insert(position-1, "1");
             }
 
             return pattern.ToString();

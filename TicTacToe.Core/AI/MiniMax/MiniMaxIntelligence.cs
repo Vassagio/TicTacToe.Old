@@ -57,7 +57,7 @@ namespace TicTacToe.Core.AI.MiniMax {
                 corner4
             };
             var random = new Random();
-            return Enumerable.Range(1, 4).Select(i => corners[random.Next(4)]).First() - 1;
+            return Enumerable.Range(1, 4).Select(i => corners[random.Next(4)]).First();
         }
 
         private int GetChildRank(MiniMaxContext miniMaxContext, IBoard board, IPlayer minimizePlayer) {

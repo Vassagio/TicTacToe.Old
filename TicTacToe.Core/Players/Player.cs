@@ -16,7 +16,7 @@ namespace TicTacToe.Core.Players {
         }
 
         public void ChoosePosition(IBoard board, int position) {
-            var coordinate = board.ToCoordinate(position - 1);
+            var coordinate = board.ToCoordinate(position);
             board.SetCoordinate(this, coordinate);
         }
 
